@@ -17,12 +17,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('apellido');
-            $table->string('cedula');
-            $table->string('fecha_nacimiento');
+            $table->string('cedula')->unique();
+            $table->date('fecha_nacimiento');
             $table->string('sexo');
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->string('celular');
-            $table->string('direccion');
+            $table->text('direccion');
+            $table->string('rol');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
