@@ -15,14 +15,16 @@ class CreateCitasTable extends Migration
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('fecha_cita');
-            $table->string('hora');
+            $table->date('fecha_cita');
+            $table->time('hora');
             $table->string('medico');
-            $table->string('especialidad');
+            $table->string('especialidad_id');
             $table->enum('status', ['concluidas', 'solicitadas', 'canceladas']);
             $table->string('telefono');
             $table->timestamps();
         });
+            $table->primary(['medico_id', 'especialidad_id', 'fecha_cita']);
+
     }
 
     /**

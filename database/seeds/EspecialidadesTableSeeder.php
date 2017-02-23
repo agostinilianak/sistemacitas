@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class PermissionsTableSeeder extends Seeder
+class EspecialidadesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,161 +11,149 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('permissions')->insert([
-            'name' => 'ModuloPacientes',
+        DB::table('especialidades')->insert([
+            'name' => 'Médico internista',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'RegistrarPaciente',
+        DB::table('especialidades')->insert([
+            'name' => 'Cardiólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'VerMisCitas',
+        DB::table('especialidades')->insert([
+            'name' => 'Dermatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ModuloSecretaria',
+        DB::table('especialidades')->insert([
+            'name' => 'Endocrinólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'SolicitarCita',
+        DB::table('especialidades')->insert([
+            'name' => 'Foniatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CambiarStatusCita',
+        DB::table('especialidades')->insert([
+            'name' => 'Gastroenterólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'VerTodasLasCitas',
+        DB::table('especialidades')->insert([
+            'name' => 'Geriatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ModuloFarmaceuta',
+        DB::table('especialidades')->insert([
+            'name' => 'Hematólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'VerRecipe',
+        DB::table('especialidades')->insert([
+            'name' => 'Infectólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CambiarStatusRecipe',
+        DB::table('especialidades')->insert([
+            'name' => 'Inmunólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ModuloMedico',
+        DB::table('especialidades')->insert([
+            'name' => 'Nefrólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CrearHistoriaMedica',
+        DB::table('especialidades')->insert([
+            'name' => 'Neumonólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ActualizarHistoriaMedica',
+        DB::table('especialidades')->insert([
+            'name' => 'Neurólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'VerHistoriaMedica',
+        DB::table('especialidades')->insert([
+            'name' => 'Oncólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CrearRecipe',
+        DB::table('especialidades')->insert([
+            'name' => 'Psiquiatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ModificarRecipe',
+        DB::table('especialidades')->insert([
+            'name' => 'Reumatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ConcluirCita',
+        DB::table('especialidades')->insert([
+            'name' => 'Alergólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'ModuloAdministrador',
+        DB::table('especialidades')->insert([
+            'name' => 'Pediatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CrearRol',
+        DB::table('especialidades')->insert([
+            'name' => 'Neonatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EditarRol',
+        DB::table('especialidades')->insert([
+            'name' => 'Ginecobstetra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EliminarRol',
+        DB::table('especialidades')->insert([
+            'name' => 'Cirujano general',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'CrearPermiso',
+        DB::table('especialidades')->insert([
+            'name' => 'Cirujano cardiovascular',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EditarPermisos',
+        DB::table('especialidades')->insert([
+            'name' => 'Cirujano plástico',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EliminarPermiso',
+        DB::table('especialidades')->insert([
+            'name' => 'Traumatoóogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EliminarUsuario',
+        DB::table('especialidades')->insert([
+            'name' => 'Neurocirujano',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'EliminarHistoriaMedica',
+        DB::table('especialidades')->insert([
+            'name' => 'Oftalmólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
-    }
+        DB::table('especialidades')->insert([
+            'name' => 'Otorrinolaringólogo',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('especialidades')->insert([
+            'name' => 'Urólogo',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('especialidades')->insert([
+            'name' => 'Médico Familiar',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
 }

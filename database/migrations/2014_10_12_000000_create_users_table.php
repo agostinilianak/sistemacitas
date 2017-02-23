@@ -23,12 +23,15 @@ class CreateUsersTable extends Migration
             $table->string('telefono')->nullable();
             $table->string('celular');
             $table->text('direccion');
-            $table->string('rol');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('especialidad_id')->unsigned()->nullable();
+            $table->foreign('especialidad_id')->references('id')->on('especialidades');
             $table->rememberToken();
             $table->timestamps();
         });
+
+
     }
 
     /**
@@ -40,4 +43,5 @@ class CreateUsersTable extends Migration
     {
         Schema::dropIfExists('users');
     }
+
 }
