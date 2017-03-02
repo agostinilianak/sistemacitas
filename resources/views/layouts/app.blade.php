@@ -8,11 +8,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>SISTEMA DE CITAS</title>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jqueryui/themes/base/jquery-ui.css" />
 
     <!-- Scripts -->
     <script>
@@ -20,6 +21,36 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <script type="text/javascript" src="{{ asset('jquery/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqueryui/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(function($){
+            $.datepicker.regional['es'] = {
+                closeText: 'Cerrar',
+                prevText: '&#x3c;Ant',
+                nextText: 'Sig&#x3e;',
+                currentText: 'Hoy',
+                monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                    'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+                monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+                    'Jul','Ago','Sep','Oct','Nov','Dic'],
+                dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+                dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+                dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''};
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+        });
+
+        $(document).ready(function() {
+            $("#datepicker").datepicker();
+        });
+    </script>
+
 </head>
 <body>
     <div id="app">
@@ -54,15 +85,27 @@
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
+                            @if(Auth::user()->hasRole('Administrador'))
+                                <li><a href="{{ url('/citas') }}">Citas</a></li>
+                                <li><a href="{{ url('/pacientes') }}">Pacientes</a></li>
+                                <li><a href="{{ url('/medicos') }}">Medicos</a></li>
+                                <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
+                                <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
+                                <li><a href="{{ url('/historiasmedicas') }}">Historias Medicas</a></li>
+                                <li><a href="{{ url('/recipes') }}">Recipes</a></li>
+                                <li><a href="{{ url('/roles') }}">Roles</a></li>
+                                <li><a href="{{ url('/permisos') }}">Permisos</a></li>
+                            @endif
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->nombre . " " . Auth::user()->apellido }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
+                                           onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
@@ -84,5 +127,6 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+
 </body>
 </html>

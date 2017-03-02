@@ -12,15 +12,16 @@ class Cita extends Model
 
     public function paciente()
     {
-        return $this-> belongsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 
     public function especialidad()
     {
-        return $this-> hasOne('App\Especialidad', 'especialidad_id');
+        return $this->hasOne('App\Especialidad', 'especialidad_id');
     }
 
     public function medico()
     {
         return $this->hasMany('App\User', 'medico_id');
     }
+}

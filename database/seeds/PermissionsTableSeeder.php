@@ -34,6 +34,11 @@ class PermissionsTableSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
+        DB::table('permissions')->insert([
+            'name' => 'RegistrarUsuario',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
 
         DB::table('permissions')->insert([
             'name' => 'SolicitarCita',
@@ -154,7 +159,21 @@ class PermissionsTableSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
+        DB::table('permissions')->insert([
+            'name' => 'PermisosUsuario',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'AsignarPermiso',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'EditarUsuario',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
         DB::table('permissions')->insert([
             'name' => 'EliminarUsuario',
             'created_at' => \Carbon\Carbon::now(),

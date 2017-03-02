@@ -25,10 +25,9 @@ class CreateUsersTable extends Migration
             $table->text('direccion');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('especialidad_id')->unsigned()->nullable();
-            $table->foreign('especialidad_id')->references('id')->on('especialidades');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
 

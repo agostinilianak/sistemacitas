@@ -12,148 +12,149 @@ class EspecialidadesTableSeeder extends Seeder
     public function run()
     {
         DB::table('especialidades')->insert([
-            'name' => 'Médico internista',
+            'nombre' => 'Médico internista',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Cardiólogo',
+            'nombre' => 'Cardiólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Dermatólogo',
+            'nombre' => 'Dermatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Endocrinólogo',
+            'nombre' => 'Endocrinólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Foniatra',
+            'nombre' => 'Foniatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Gastroenterólogo',
+            'nombre' => 'Gastroenterólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Geriatra',
+            'nombre' => 'Geriatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Hematólogo',
+            'nombre' => 'Hematólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Infectólogo',
+            'nombre' => 'Infectólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Inmunólogo',
+            'nombre' => 'Inmunólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Nefrólogo',
+            'nombre' => 'Nefrólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Neumonólogo',
+            'nombre' => 'Neumonólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Neurólogo',
+            'nombre' => 'Neurólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Oncólogo',
+            'nombre' => 'Oncólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Psiquiatra',
+            'nombre' => 'Psiquiatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Reumatólogo',
+            'nombre' => 'Reumatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Alergólogo',
+            'nombre' => 'Alergólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Pediatra',
+            'nombre' => 'Pediatra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Neonatólogo',
+            'nombre' => 'Neonatólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Ginecobstetra',
+            'nombre' => 'Ginecobstetra',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Cirujano general',
+            'nombre' => 'Cirujano general',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Cirujano cardiovascular',
+            'nombre' => 'Cirujano cardiovascular',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Cirujano plástico',
+            'nombre' => 'Cirujano plástico',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Traumatoóogo',
+            'nombre' => 'Traumatoóogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Neurocirujano',
+            'nombre' => 'Neurocirujano',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Oftalmólogo',
+            'nombre' => 'Oftalmólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Otorrinolaringólogo',
+            'nombre' => 'Otorrinolaringólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Urólogo',
+            'nombre' => 'Urólogo',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
         DB::table('especialidades')->insert([
-            'name' => 'Médico Familiar',
+            'nombre' => 'Médico Familiar',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
+    }
 }

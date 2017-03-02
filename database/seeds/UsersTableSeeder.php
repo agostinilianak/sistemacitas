@@ -19,7 +19,6 @@ class UsersTableSeeder extends Seeder
             'sexo'=>'femenino',
             'celular'=>'04241669545',
             'direccion'=>'La California',
-            'rol'=>'Administrador',
             'email' => 'admin@sistemacitas.com',
             'password' => bcrypt('123123'),
 
