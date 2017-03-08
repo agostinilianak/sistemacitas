@@ -87,15 +87,13 @@ class PermissionsTableSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
         DB::table('permissions')->insert([
-            'name' => 'ActualizarHistoriaMedica',
+            'name' => 'VerHistoriaMedica',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
-
         DB::table('permissions')->insert([
-            'name' => 'VerHistoriaMedica',
+            'name' => 'ActualizarHistoriaMedica',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
@@ -182,6 +180,11 @@ class PermissionsTableSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => 'EliminarHistoriaMedica',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'CancelarCita',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);

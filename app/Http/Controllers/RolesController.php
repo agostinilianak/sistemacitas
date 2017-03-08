@@ -11,26 +11,31 @@ use Auth;
 class RolesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $roles = Role::paginate();
         return view('roles.index', ['roles'=>$roles]);
     }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function create()
     {
         if(!Auth::user()->can('CrearRol'))
@@ -48,7 +53,7 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'name' => 'required|alpha',
+            'name' => 'required|max:10|alpha',
         ]);
 
         if($v->fails()){
@@ -69,7 +74,6 @@ class RolesController extends Controller
         }
 
         return redirect('/roles')->with('mensaje', 'Rol ha sido creado con exito');
-
     }
 
     /**
@@ -92,7 +96,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        if(!Auth::user()->can('EditarRol'))
+        if(!Auth::user()->can('EditarRole'))
             abort(403);
 
         $role = Role::findOrFail($id);
@@ -109,7 +113,7 @@ class RolesController extends Controller
     public function update(Request $request, $id)
     {
         $v = Validator::make($request->all(), [
-            'name' => 'required|alpha',
+            'name' => 'required|max:50|alpha',
         ]);
 
         if($v->fails()){
@@ -152,6 +156,15 @@ class RolesController extends Controller
         return redirect('/roles')->with('mensaje', 'Rol ha sido eliminado con exito');
     }
 
+    public function permisos($id){
+        if(!Auth::user()->can('AsignarPermiso'))
+            abort(403);
+
+        $role = Role::findOrFail($id);
+        $permisos = Permission::all();
+        return view('roles.permisos', ['role'=>$role, 'permisos'=>$permisos]);
+    }
+
     public function asignarPermisos(Request $request, $id){
         $role = Role::findOrFail($id);
         $role->revokePermissionTo(Permission::all());
@@ -159,5 +172,4 @@ class RolesController extends Controller
             $role->givePermissionTo($request->input('permisos'));
         return redirect('/roles')->with('mensaje', 'Permisos Asignados Satisfactoriamente');
     }
-
 }

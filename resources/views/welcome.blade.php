@@ -5,10 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>SISTEMA CITAS MEDICAS</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <link href="/css/font-awesome.css" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -71,23 +72,25 @@
                     @if (Auth::check())
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
+                        <a href="{{ url('/login') }}">Iniciar Sesión</a>
+                        <a href="{{ url('/register') }}">Registrarse</a>
                     @endif
                 </div>
             @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Sistema Citas Medicas
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="connect">
+                    <a href="https://www.facebook.com" id="facebook" target="_blank">
+                            <i class="fa fa-facebook fa-2x"></i></a>
+                    <a href="https://www.twitter.com" id="twitter" target="_blank">
+                        <i class="fa fa-twitter fa-2x"></i></a>
+                    <a href="https://www.plus.google.com" id="googleplus" target="_blank">
+                        <i class="fa fa-google-plus fa-2x"></i></a>
+                    <a href="https://www.pinterest.com" id="pinterest" target="_blank">
+                        <i class="fa fa-pinterest fa-2x"></i></a>
                 </div>
             </div>
         </div>

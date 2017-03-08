@@ -51,7 +51,7 @@ class RegisterController extends Controller
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
             'cedula' => 'required|max:8|unique:users',
-            'fecha_nacimiento'=>'required',
+            'fecha_nacimiento'=>'required|date',
             'sexo'=>'required',
             'telefono' => 'max:255',
             'direccion'=>'max:255',

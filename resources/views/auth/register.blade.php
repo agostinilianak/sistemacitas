@@ -56,8 +56,7 @@
                             <label for="fecha_nacimiento" class="col-md-4 control-label">Fecha de Nacimiento</label>
 
                             <div class="col-md-6">
-                                <input type="text" name="fecha_nacimiento" id="datepicker" size="12" value="{{ old('fecha_nacimiento') }}" />
-
+                                <input type="date" name="fecha_nacimiento" id="datepicker" size="12" value="{{ old('fecha_nacimiento') }}" />
                                 @if ($errors->has('fecha_nacimiento'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('fecha_nacimiento') }}</strong>
@@ -71,12 +70,15 @@
                             <label for="sexo" class="col-md-4 control-label">Sexo</label>
 
                             <div class="col-md-6">
-                                <input type="radio" id="sexo" name="sexo" value="M" @if(old('sexo')=='M') checked @endif/>Masculino
-                                <input type="radio" id="sexo" name="sexo" value="F" @if(old('sexo')=='F') checked @endif/>Femenino
+                                <label><input type="radio" id="sexo" name="sexo" value="M" @if(old('sexo')=='M') checked @endif/>Masculino</label>
+                                <br>
+                                <label><input type="radio" id="sexo" name="sexo" value="F" @if(old('sexo')=='F') checked @endif/>Femenino</label>
 
                                 @if ($errors->has('sexo'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('sexo') }}</strong>
+                                        <strong>
+                                            <strong>{{ $errors->first('sexo') }}</strong>
+                                        </strong>
                                     </span>
                                 @endif
                             </div>
@@ -114,7 +116,7 @@
                             <label for="direccion" class="col-md-4 control-label">Direccion</label>
 
                             <div class="col-md-6">
-                                <textarea name="direccion" id="direccion" cols="45" rows="3"></textarea>
+                                <textarea name="direccion" id="direccion" cols="45" rows="3">{{ $user->direccion or old('direccion') }}</textarea>
 
                                 @if ($errors->has('direccion'))
                                     <span class="help-block">
@@ -128,7 +130,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">

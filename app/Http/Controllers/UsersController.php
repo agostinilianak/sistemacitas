@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Especialidad;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::paginate();
-        return view('users.index', ['users =>$users']);
+        return view('users.index', ['users' =>$users]);
     }
 
     /**
@@ -39,7 +40,8 @@ class UsersController extends Controller
             abort(403, 'Acceso Prohibido');
 
         $roles = Role::all();
-        return view('users.create', ['roles' => $roles]);
+        $especialidades = Especialidad::all();
+        return view('users.create', ['roles' => $roles, 'especialidades'=>$especialidades]);
     }
 
     /**
@@ -50,6 +52,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->input());
         $v = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
@@ -62,6 +65,7 @@ class UsersController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
             'role' => 'required',
+            'especialidad'=> 'required_if:role,Medico',
 
         ]);
 
@@ -83,16 +87,18 @@ class UsersController extends Controller
                 'direccion' => $request->input('direccion'),
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
+                'especialidad_id' => ($request->input('especialidad')!='')?$request->input('especialidad'):NULL,
             ]);
 
             $user->assignRole($request->input('role'));
+
 
         } catch (\Exception $e) {
             \DB::rollback();
         } finally {
             \DB::commit();
         }
-        return redirect('/usuarios')->with('mensaje', 'Usuario creado satisfactoriamente');
+            return redirect('/home')->with('mensaje', 'Proceso satisfactorio');
     }
 
     /**
@@ -142,6 +148,7 @@ class UsersController extends Controller
             'direccion' => 'max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $id . ',id',
             'role' => 'required',
+            'especialidad'=> 'required_if:role,Medico',
 
         ]);
 
@@ -162,6 +169,7 @@ class UsersController extends Controller
                 'celular' => $request->input('celular'),
                 'direccion' => $request->input('direccion'),
                 'email' => $request->input('email'),
+                'especialidad_id' => $request->input('especialidad'),
             ]);
 
             if ($request->input('password')) {
@@ -184,19 +192,7 @@ class UsersController extends Controller
         } finally {
             \DB::commit();
         }
-
-        if ($request->input('role') == 'Paciente') {
-            return redirect('/pacientes')->with('mensaje', 'Usuario actualizado satisfactoriamente');
-        } elseif ($request->input('role') == 'Medico') {
-            return redirect('/pacientes')->with('mensaje', 'Usuario actualizado satisfactoriamente');
-        } elseif ($request->input('role') == 'Medico') {
-            return redirect('/pacientes')->with('mensaje', 'Usuario actualizado satisfactoriamente');
-        } elseif ($request->input('role') == 'Medico') {
-            return redirect('/pacientes')->with('mensaje', 'Usuario actualizado satisfactoriamente');
-        } elseif ($request->input('role') == 'Administrador') {
-            return redirect('/pacientes')->with('mensaje', 'Usuario actualizado satisfactoriamente');
-        }
-
+            return redirect('/home')->with('mensaje', 'Actualización satisfactoria');
     }
 
 
@@ -212,7 +208,7 @@ class UsersController extends Controller
             abort(403, 'Permiso Denegado.');
 
         User::destroy($id);
-        return redirect('/usuarios')->with('mensaje', 'Usuario eliminado satisfactoriamente');
+        return redirect('/home')->with('mensaje', 'Usuario eliminado satisfactoriamente');
     }
 
     public function permisos($id)
@@ -234,17 +230,37 @@ class UsersController extends Controller
         return redirect('/usuarios')->with('mensaje', 'Permisos Asignados Satisfactoriamente');
     }
 
-    public function medicos()
-    {
-        $medicos = User::role('Medico')->paginate();
-        return view('users.index', ['users' => $medicos]);
-    }
-
     public function pacientes()
     {
         $pacientes = User::role('Paciente')->paginate();
-        return view('users.index', ['users' => $pacientes]);
+        return view('pacientes.index', ['users' => $pacientes]);
     }
+
+    public function medicos()
+    {
+        $medicos = User::role('Medico')->paginate();
+        return view('medicos.index', ['users' => $medicos]);
+    }
+
+
+    public function farmaceutas()
+    {
+        $farmaceutas= User::role('Farmaceuta')->paginate();
+        return view('users.index', ['users' => $farmaceutas]);
+    }
+
+    public function secretarias()
+    {
+        $secretarias= User::role('Secretaria')->paginate();
+        return view('users.index', ['users' => $secretarias]);
+    }
+
+    public function administradores()
+    {
+        $administradores= User::role('Administrador')->paginate();
+        return view('users.index', ['users' => $administradores]);
+    }
+
 
 }
 

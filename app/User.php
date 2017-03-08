@@ -18,7 +18,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nombre', 'apellido', 'cedula', 'fecha_nacimiento', 'sexo', 'telefono', 'celular', 'direccion', 'email',
-        'password', 'especilidad_id'
+        'password', 'especialidad_id'
     ];
 
     /**
@@ -38,5 +38,9 @@ class User extends Authenticatable
     public function scopeUMedicos($query)
     {
         return $query->where('especialidad_id', '<>', null);
+    }
+    public function especialidad(){
+
+        return $this->belongsTo('App\Especialidad');
     }
 }

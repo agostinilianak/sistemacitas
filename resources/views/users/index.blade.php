@@ -16,12 +16,13 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Listado</div>
-
+                    <div class="panel-heading">Listado de Usuarios</div>
                     <div class="panel-body">
+                        @if(Auth::user()->can('RegistrarUsuario'))
                         <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
-                            <i class="fa fa-user"></i> Nuevo
+                            <i class="fa fa-user"></i> Nuevo Usuario
                         </a>
+                        @endif
 
                         <table class="table table-bordered">
                             <tr>
@@ -29,7 +30,6 @@
                                 <th>Apellido</th>
                                 <th>Telefono</th>
                                 <th>Celular</th>
-                                <th>Rol</th>
                                 <th width="10%" colspan="3">Acciones</th>
                             </tr>
                             @foreach($users as $user)
@@ -38,28 +38,21 @@
                                     <td>{{ $user->apellido }}</td>
                                     <td>{{ $user->telefono }}</td>
                                     <td>{{ $user->celular }}</td>
-                                    <td>{{ $user->roles[0]->name }}</td>
+                                    @if(Auth::user()->can('PermisosUsuario'))
                                     <td>
-                                        <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                           class="btn btn-warning">
-                                            <i class="fa fa-id-card"></i>
-                                        </a>
+                                            <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
+                                               class="btn btn-warning">
+                                                <i class="fa fa-id-card"></i>
+                                            </a>
                                     </td>
+                                    @endif
+                                    @if(Auth::user()->can('EditarUsuario'))
                                     <td>
-                                        <a href="{{ url('usuarios/'.$user->id.'/edit') }}" class="btn btn-primary">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                            <a href="{{ url('usuarios/'.$user->id.'/edit') }}" class="btn btn-primary">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
                                     </td>
-                                    {{--<td>
-                                        @if(Auth::user()->roles[0]->hasPermissionTo('PermisosUsuario') or Auth::user()->can('PermisosUsuario'))
-
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(Auth::user()->roles[0]->hasPermissionTo('EditarUsuario') or Auth::user()->can('EditarUsuario'))
-
-                                        @endif
-                                    </td>--}}
+                                    @endif
                                     <td>
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('/usuarios/'.$user->id) }}"
@@ -67,8 +60,7 @@
                                                 data-toggle="modal" data-target="#confirm-delete">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
-                                    </td>
-                                </tr>
+                                    </td>              </tr>
                             @endforeach
                         </table>
                     </div>
@@ -100,13 +92,12 @@
                                 class="btn btn-default"
                                 data-dismiss="modal">Cancelar
                         </button>
-                        <button id="delete-btn"
-                                class="btn btn-danger"
-                                title="Eliminar">Eliminar
-                        </button>
-                        {{--@if(Auth::user()->roles[0]->hasPermissionTo('EliminarUsuario') or Auth::user()->can('EliminarUsuario'))
-
-                        @endif--}}
+                        @if(Auth::user()->can('EliminarUsuario'))
+                            <button id="delete-btn"
+                                    class="btn btn-danger"
+                                    title="Eliminar">Eliminar
+                            </button>
+                        @endif
                     </form>
                 </div>
             </div>

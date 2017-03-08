@@ -8,125 +8,129 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SISTEMA DE CITAS</title>
+    <title>SISTEMA CITAS MEDICAS</title>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="jqueryui/themes/base/jquery-ui.css" />
-
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-    <script type="text/javascript" src="{{ asset('jquery/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jqueryui/jquery-ui.js') }}"></script>
-    <script type="text/javascript">
-        jQuery(function($){
-            $.datepicker.regional['es'] = {
-                closeText: 'Cerrar',
-                prevText: '&#x3c;Ant',
-                nextText: 'Sig&#x3e;',
-                currentText: 'Hoy',
-                monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                    'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-                monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-                    'Jul','Ago','Sep','Oct','Nov','Dic'],
-                dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
-                dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
-                dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
-                weekHeader: 'Sm',
-                dateFormat: 'dd/mm/yy',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: ''};
-            $.datepicker.setDefaults($.datepicker.regional['es']);
-        });
-
-        $(document).ready(function() {
-            $("#datepicker").datepicker();
-        });
-    </script>
 
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+<div id="app">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#app-navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
-                        @else
-                            @if(Auth::user()->hasRole('Administrador'))
-                                <li><a href="{{ url('/citas') }}">Citas</a></li>
-                                <li><a href="{{ url('/pacientes') }}">Pacientes</a></li>
-                                <li><a href="{{ url('/medicos') }}">Medicos</a></li>
-                                <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
-                                <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
-                                <li><a href="{{ url('/historiasmedicas') }}">Historias Medicas</a></li>
-                                <li><a href="{{ url('/recipes') }}">Recipes</a></li>
-                                <li><a href="{{ url('/roles') }}">Roles</a></li>
-                                <li><a href="{{ url('/permisos') }}">Permisos</a></li>
-                            @endif
-
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->nombre . " " . Auth::user()->apellido }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                           onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    Sistema Citas Medicas
+                </a>
             </div>
-        </nav>
 
-        @yield('content')
-    </div>
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    &nbsp;
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ url('/login') }}">Iniciar Sesión</a></li>
+                        <li><a href="{{ url('/register') }}">Registrarse</a></li>
+                    @else
+                        @hasrole ('Administrador')
+                            <li><a href="{{ url('/citas') }}">Citas</a></li>
+                            <li><a href="{{ url('/pacientes') }}">Pacientes</a></li>
+                            <li><a href="{{ url('/medicos') }}">Medicos</a></li>
+                            <li><a href="{{ url('/usuarios') }}">Usuarios</a></li>
+                            <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
+                            <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
+                            <li><a href="{{ url('/historiasmedicas') }}">Historias Medicas</a></li>
+                            <li><a href="{{ url('/recipes') }}">Recipes</a></li>
+                            <li><a href="{{ url('/roles') }}">Roles</a></li>
+                            <li><a href="{{ url('/permisos') }}">Permisos</a></li>
+                        @endhasrole
+                        @hasrole('Secretaria')
+                            <li><a href="{{ url('/citas') }}">Citas</a></li>
+                            <li><a href="{{ url('/pacientes') }}">Pacientes</a></li>
+                            <li><a href="{{ url('/medicos') }}">Medicos</a></li>
+                        @endhasrole
+                        @hasrole('Medico')
+                            <li><a href="{{ url('/citas') }}">Citas</a></li>
+                            <li><a href="{{ url('/medicos') }}">Medicos</a></li>
+                            <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
+                            <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
+                            <li><a href="{{ url('/historiasmedicas') }}">Historias Medicas</a></li>
+                            <li><a href="{{ url('/recipes') }}">Recipes</a></li>
+                        @endhasrole
+                        @hasrole('Farmaceuta')
+                            <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
+                            <li><a href="{{ url('/recipes') }}">Recipes</a></li>
+                        @endhasrole
+                        @hasrole('Paciente')
+                            <li><a href="{{ url('/vermiscitas') }}">Mis Citas</a></li>
+                        @endhasrole
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                {{ Auth::user()->nombre . " " . Auth::user()->apellido}} <span class="caret"></span>
+                            </a>
 
-    <!-- Scripts -->
-    <script src="/js/app.js"></script>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ url('/logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        Salir
+                                    </a>
+
+                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                          style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @yield('content')
+</div>
+
+<!-- Scripts -->
+<script src="/js/app.js"></script>
+<script type="application/javascript">
+    $('#confirm-delete').on('show.bs.modal', function (e) {
+        $(this).find('.form-delete').attr('action', $(e.relatedTarget).data('action'));
+        $(this).find('.nombre').text($(e.relatedTarget).data('name'));
+    });
+</script>
+<script>
+    $('#role').on('change', function (e){
+        if ($(e.target).val()=='Medico'){
+            $('#especialidadDiv').show();
+        }else {
+            $('#especialidadDiv').hide();
+        }
+    });
+</script>
 
 </body>
 </html>

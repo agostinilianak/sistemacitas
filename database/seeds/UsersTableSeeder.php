@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
             'apellido'=>'Sistema Citas',
             'cedula'=>'1111111',
             'fecha_nacimiento'=>'2017-02-21',
-            'sexo'=>'femenino',
+            'sexo'=>'F',
             'celular'=>'04241669545',
             'direccion'=>'La California',
             'email' => 'admin@sistemacitas.com',

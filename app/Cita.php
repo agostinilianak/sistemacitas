@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cita extends Model
 {
     protected $fillable = [
-        'especialidad_id', 'medico_id', 'paciente_id', 'fecha_cita', 'status',
+        'paciente_id', 'especialidad_id', 'medico_id', 'fecha_cita', 'status',
     ];
 
     public function paciente()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'paciente_id');
     }
 
     public function especialidad()

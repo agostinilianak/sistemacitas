@@ -12,13 +12,14 @@ class Especialidad extends Model
         'nombre',
     ];
 
-    public function paciente()
+    public function medico()
     {
-        return $this->belongsTo('App\Paciente');
+        return $this->hasOne('App\User');
     }
 
-    public function especialidad()
+    public function usuarios()
     {
-        return $this->belongsToMany('App\Especialidad', 'especialidad_id');
+        return $this->hasMany('App\Users');
     }
+
 }
