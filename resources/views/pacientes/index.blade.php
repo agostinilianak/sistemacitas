@@ -47,7 +47,7 @@
                                     @endif
                                     @if(Auth::user()->can('SolicitarCita'))
                                     <td>
-                                            <a href="{{ url('citas/'.$cita->id.'/create') }}"
+                                            <a href="{{ url('citas/'.$user->id.'/solicitarcita') }}"
                                                class="btn btn-success">
                                                 <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                                             </a>

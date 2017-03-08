@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cita;
 use App\Especialidad;
 use Illuminate\Http\Request;
 use App\User;
@@ -260,7 +261,17 @@ class UsersController extends Controller
         $administradores= User::role('Administrador')->paginate();
         return view('users.index', ['users' => $administradores]);
     }
+    public function solicitarcita()
+    {
+        if(!Auth::user()->can('SolicitarCita'))
+            abort(403);
 
+        $citas = Cita::all();
+        $pacientes = User::role('Paciente')->get();
+        $medicos = User::role('Medico')->get();
+        $especialidades = Especialidad::all();
+        return view('citas.create', ['citas'=>$citas, 'pacientes'=> $pacientes, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
+    }
 
 }
 

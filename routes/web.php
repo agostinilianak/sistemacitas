@@ -14,9 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/calendario', function () {
-    return view('calendar');
-});
 
 Auth::routes();
 
@@ -31,10 +28,10 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::resource('/roles', 'RolesController');
     Route::resource('/permisos', 'PermissionsController');
     Route::get('/roles/{id}/permisos','RolesController@permisos');
-    Route::get('/citas/{id}/solicitarcita','CitasController');
-    //Route::resource('/cursos', 'CursosController');
+    Route::get('/usuarios/{id}/permisos','UsersController@permisos');
+    Route::get('/citas/{id}/solicitarcita','UsersController@solicitarcita');
+
     //Route::put('/roles/{id}/asignarpermisos','RolesController@asignarPermisos');
-    //Route::put('/usuarios/{id}/asignarpermisos','UsersController@asignarPermisos');
     //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
     //Route::get('/miscursos', 'HomeController@miscursos');
     //Route::get('/cursos/{id}/postular', 'CursosController@postular');
