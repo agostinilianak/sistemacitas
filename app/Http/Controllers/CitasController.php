@@ -47,28 +47,16 @@ class CitasController extends Controller
      */
     public function store(Request $request)
     {
-        $v = Validator::make($request->all(), [
-            'paciente' => 'required',
-            'especialidad'=> 'required',
-            'medico' => 'required',
-            'fecha_cita' => 'required',
-            'status' => 'required',
-            'observaciones' => 'max:100',
-
-        ]);
-
-        if ($v->fails()) {
-            return redirect()->back()->withErrors($v)->withInput();
-        }
-
+        $medico = User::findOrFail($request->input('medicos'));
         try {
             \DB::beginTransaction();
 
-            $cita = Cita::create([
-                'paciente_id' => $request->input('paciente'),
-                'especialidad_id' => $request->input('especialidad'),
-                'medico_id' => $request->input('medico'),
+            Cita::create([
+                'paciente_id' => $request->input('paciente_id'),
+                'especialidad_id' => $medico->especialidad->id,
+                'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
+                'status' => $request->input('status'),
                 'observaciones' => $request->input('observaciones'),
             ]);
 
@@ -195,6 +183,19 @@ class CitasController extends Controller
         $role = Role::findOrFail($id);
         $permisos = Permission::all();
         return view('roles.permisos', ['role'=>$role, 'permisos'=>$permisos]);
+    }
+    public function pacientes($id){
+        $pacientes = User::role('Paciente')->get($id);
+        $citas = Cita::all();
+        return view('citas.create', ['citas'=>$citas, 'pacientes'=>$pacientes]);
+    }
+
+    public function vermiscitas()
+    {
+        //if(!Auth::user()->can('VerMisCitas'))
+        //    abort(403);
+
+        return view('pacientes.vermiscitas');
     }
 
 }

@@ -20,8 +20,8 @@ class Cita extends Model
         return $this->hasOne('App\Especialidad', 'especialidad_id');
     }
 
-    public function medico()
+    public function medicos()
     {
-        return $this->hasMany('App\User', 'medico_id');
+        return $this->hasOne('App\User', 'medico_id');
     }
 }

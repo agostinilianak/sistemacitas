@@ -16,15 +16,33 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Listado de Pacientes</div>
+                    <div class="panel-heading">
+                        Listado de Pacientes
+
+                    </div>
 
                     <div class="panel-body">
-                        @if(Auth::user()->can('RegistrarPaciente'))
-                        <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
-                            <i class="fa fa-user"></i> Nuevo Paciente
-                        </a>
-                        @endif
-
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if(Auth::user()->can('RegistrarPaciente'))
+                                    <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
+                                        <i class="fa fa-user"></i> Nuevo Paciente
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="col-lg-6">
+                                <form action="{{ url('/pacientes') }}" method="get">
+                                    <div class="input-group">
+                                        <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar ..."
+                                        value="{{ $buscar }}">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    </div><!-- /input-group -->
+                                </form>
+                            </div><!-- /.col-lg-6 -->
+                        </div>
+                        <br>
                         <table class="table table-bordered">
                             <tr>
                                 <th>Nombre</th>
@@ -38,27 +56,27 @@
                                     <td>{{ $user->apellido }}</td>
                                     <td>{{ $user->cedula }}</td>
                                     @if(Auth::user()->can('PermisosUsuario'))
-                                    <td>
+                                        <td>
                                             <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
                                                class="btn btn-warning">
                                                 <i class="fa fa-id-card"></i>
                                             </a>
-                                    </td>
+                                        </td>
                                     @endif
                                     @if(Auth::user()->can('SolicitarCita'))
-                                    <td>
+                                        <td>
                                             <a href="{{ url('citas/'.$user->id.'/solicitarcita') }}"
                                                class="btn btn-success">
                                                 <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                                             </a>
-                                    </td>
+                                        </td>
                                     @endif
                                     @if(Auth::user()->can('EditarUsuario'))
-                                    <td>
+                                        <td>
                                             <a href="{{ url('usuarios/'.$user->id.'/edit') }}" class="btn btn-primary">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                    </td>
+                                        </td>
                                     @endif
                                     <td>
                                         <button class="btn btn-danger"
@@ -70,6 +88,11 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    {{ $users->appends(['buscar'=>$buscar])->links() }}
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

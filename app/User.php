@@ -43,4 +43,13 @@ class User extends Authenticatable
 
         return $this->belongsTo('App\Especialidad');
     }
+
+    public function scopeNombre($query, $nombre){
+        return $query->where('nombre', 'like', '%'.$nombre.'%');
+    }
+
+    public function scopeApellido($query, $apellido){
+        return $query->orWhere('apellido', 'like', '%'.$apellido.'%');
+    }
+
 }

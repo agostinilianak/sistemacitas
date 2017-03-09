@@ -35,6 +35,7 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
     //Route::get('/miscursos', 'HomeController@miscursos');
     //Route::get('/cursos/{id}/postular', 'CursosController@postular');
+    //PARA RECIPES Route::post('/miscursos', 'HomeController@miscursos');
 });
 
 Route::group(['middleware' => ['role:Secretaria']], function () {
@@ -54,8 +55,7 @@ Route::group(['middleware' => ['role:Medico']], function () {
 });
 
 Route::group(['middleware' => ['role:Paciente']], function () {
-    //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
-    //Route::get('/miscursos', 'HomeController@miscursos');
-    //Route::get('/cursos/{id}/postular', 'CursosController@postular');
+    Route::get('/vermiscitas', 'CitasController@vermiscitas');
+
 });
 

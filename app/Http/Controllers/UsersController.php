@@ -233,8 +233,17 @@ class UsersController extends Controller
 
     public function pacientes()
     {
-        $pacientes = User::role('Paciente')->paginate();
-        return view('pacientes.index', ['users' => $pacientes]);
+        $pacientes = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $pacientes = User::role('Paciente')
+                ->nombre($buscar)
+                ->apellido($buscar)
+                ->paginate();
+        else
+            $pacientes = User::role('Paciente')->paginate();
+
+        return view('pacientes.index', ['users' => $pacientes, 'buscar'=>$buscar]);
     }
 
     public function medicos()
@@ -261,16 +270,16 @@ class UsersController extends Controller
         $administradores= User::role('Administrador')->paginate();
         return view('users.index', ['users' => $administradores]);
     }
-    public function solicitarcita()
+    public function solicitarcita($id)
     {
         if(!Auth::user()->can('SolicitarCita'))
             abort(403);
 
         $citas = Cita::all();
-        $pacientes = User::role('Paciente')->get();
+        $paciente = User::findOrFail($id);
         $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.create', ['citas'=>$citas, 'pacientes'=> $pacientes, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
+        return view('citas.create', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
 
 }

@@ -22,7 +22,8 @@ class CreateCitasTable extends Migration
             $table->integer('medico_id')->unsigned();
             $table->foreign('medico_id')->references('id')->on('users');
             $table->date('fecha_cita');
-            $table->enum('status', ['concluida', 'solicitada', 'cancelada']);
+            $table->enum('status', ['solicitadas', 'concluidas', 'canceladas']);
+            $table->text('observaciones');
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['paciente_id', 'especialidad_id', 'fecha_cita']);
