@@ -13,7 +13,12 @@ class CreateMedicinasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('medicinas', function (Blueprint $table){
+            $table->increments('id');
+            $table->string('nombre');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -23,6 +28,6 @@ class CreateMedicinasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('especialidades');
     }
 }

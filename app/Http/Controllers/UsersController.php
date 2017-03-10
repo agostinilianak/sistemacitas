@@ -239,6 +239,7 @@ class UsersController extends Controller
             $pacientes = User::role('Paciente')
                 ->nombre($buscar)
                 ->apellido($buscar)
+                ->cedula($buscar)
                 ->paginate();
         else
             $pacientes = User::role('Paciente')->paginate();
@@ -248,11 +249,35 @@ class UsersController extends Controller
 
     public function medicos()
     {
-        $medicos = User::role('Medico')->paginate();
-        return view('medicos.index', ['users' => $medicos]);
+        $medicos = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $medicos = User::role('Medico')
+                ->nombre($buscar)
+                ->apellido($buscar)
+                ->cedula($buscar)
+                ->paginate();
+        else
+            $medicos = User::role('Medico')->paginate();
+
+        return view('medicos.index', ['users' => $medicos, 'buscar'=>$buscar]);
     }
+    public function usuarios()
+    {
+        $usuarios = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $usuarios= User::all()
+                ->nombre($buscar)
+                ->apellido($buscar)
+                ->cedula($buscar)
+                ->rol($buscar)
+                ->paginate();
+        else
+            $usuarios = User::all()->paginate();
 
-
+        return view('usuarios.index', ['usuarios' => $usuarios, 'buscar'=>$buscar]);
+    }
     public function farmaceutas()
     {
         $farmaceutas= User::role('Farmaceuta')->paginate();

@@ -23,17 +23,17 @@
                             <tr>
                                 <th>Paciente</th>
                                 <th>Medico</th>
-                                <th>Especialidad</th>
                                 <th>Fecha</th>
+                                <th>Hora</th>
                                 <th>Status</th>
                                 <th width="10%" colspan="3">Acciones</th>
                             </tr>
                             @foreach($citas as $cita)
                                 <tr>
-                                    <td>{{ $user->paciente->nombre. " " . $user->paciente->apellido }}</td>
-                                    <td>{{ $user->medico->nombre ." ". $user->medico->apellido }}</td>
-                                    <td>{{ $user->especialidad->nombre }}</td>
+                                    <td>{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ". $cita->paciente->cedula }}</td>
+                                    <td>{{ $cita->medico->nombre." ". $cita->medico->apellido ." (". $cita->medico->especialidad->nombre . ")"}}</td>
                                     <td>{{ $cita->fecha_cita }}</td>
+                                    <td>{{ $cita->hora_cita }}</td>
                                     <td>{{ $cita->status }}</td>
                                     @if(Auth::user()->can('EditarCita'))
                                     <td>

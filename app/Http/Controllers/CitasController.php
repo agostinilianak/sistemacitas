@@ -23,7 +23,7 @@ class CitasController extends Controller
     public function index()
     {
         $citas = Cita::paginate(10);
-        return view('citas.index', ['citas' =>$citas]);
+        return view('citas.index', ['citas'=>$citas]);
     }
 
     /**
@@ -33,10 +33,10 @@ class CitasController extends Controller
      */
     public function create()
     {
-        $pacientes = User::role('Paciente')->get();
-        $medicos = User::role('Medico')->get();
+        $paciente = User::role('Paciente')->get();
+        $medico = User::role('Medico')->get();
         $especialidades =Especialidad::all();
-        return view('citas.create', ['especialidades'=>$especialidades, 'pacientes'=>$pacientes, 'medicos'=>$medicos]);
+        return view('citas.create', ['especialidades'=>$especialidades, 'paciente'=>$paciente, 'medico'=>$medico]);
     }
 
     /**
@@ -47,7 +47,7 @@ class CitasController extends Controller
      */
     public function store(Request $request)
     {
-        $medico = User::findOrFail($request->input('medicos'));
+        $medico = User::findOrFail($request->input('medico'));
         try {
             \DB::beginTransaction();
 
@@ -56,16 +56,17 @@ class CitasController extends Controller
                 'especialidad_id' => $medico->especialidad->id,
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
+                'hora_cita' => $request->input('hora_cita'),
                 'status' => $request->input('status'),
-                'observaciones' => $request->input('observaciones'),
             ]);
 
         } catch (\Exception $e) {
             \DB::rollback();
+
         } finally {
             \DB::commit();
         }
-        return redirect('/pacientes')->with('mensaje', 'Cita creada Exitosamente');
+        return redirect('/citas')->with('mensaje', 'Cita creada Exitosamente');
     }
 
     /**
@@ -90,10 +91,10 @@ class CitasController extends Controller
         if(!Auth::user()->can('EditarCita'))
             abort(403,'Acceso Prohibido');
 
-        $pacientes = User::role('Paciente')->get();
-        $medicos = User::role('Medico')->get();
-        $especialidades =Especialidad::all();
-        return view('citas.create', ['especialidades'=>$especialidades, 'pacientes'=>$pacientes, 'medicos'=>$medicos]);
+        $paciente = User::role('Paciente')->get();
+        $medico = User::role('Medico')->get();
+        $especialidades = Especialidad::all();
+        return view('citas.edit', ['especialidades'=>$especialidades, 'paciente'=>$paciente, 'medico'=>$medico]);
     }
 
     /**
@@ -105,62 +106,27 @@ class CitasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $v = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-            'apellido' => 'required|max:255',
-            'cedula' => 'required|max:8|unique:users,cedula,' . $id . ',id',
-            'fecha_nacimiento' => 'required',
-            'sexo' => 'required',
-            'telefono' => 'max:255',
-            'celular' => 'max:255',
-            'direccion' => 'max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id . ',id',
-            'role' => 'required',
-            'especialidad'=> 'required_if:role,Medico',
-
-        ]);
-
-        if ($v->fails()) {
-            return redirect()->back()->withErrors($v)->withInput();
-        }
+        $medico = User::findOrFail($request->input('medicos'));
 
         try {
             \DB::beginTransaction();
-            $user = User::findOrFail($id);
-            $user->update([
-                'nombre' => $request->input('nombre'),
-                'apellido' => $request->input('apellido'),
-                'cedula' => $request->input('cedula'),
-                'fecha_nacimiento' => $request->input('fecha_nacimiento'),
-                'sexo' => $request->input('sexo'),
-                'telefono' => $request->input('telefono'),
-                'celular' => $request->input('celular'),
-                'direccion' => $request->input('direccion'),
-                'email' => $request->input('email'),
-                'especialidad_id' => $request->input('especialidad'),
+            $cita=Cita::findOrFail($id);
+            $cita->update([
+                'paciente_id' => $request->input('paciente_id'),
+                'especialidad_id' => $medico->especialidad->id,
+                'medico_id' => $medico->id,
+                'fecha_cita' => $request->input('fecha_cita'),
+                'hora_cita' => $request->input('hora_cita'),
+                'status' => $request->input('status'),
+                'observaciones' => $request->input('observaciones'),
             ]);
-
-            if ($request->input('password')) {
-                $v = Validator::make($request->all(),
-                    [
-                        'password' => 'required|min:6|confirmed',
-                    ]);
-
-                if ($v->fails()) {
-                    return redirect()->back()->withErrors($v)->withInput();
-                }
-                $user->update([
-                    'password' => bcrypt($request->input('password')),
-                ]);
-            }
-            $user->syncRoles($request->input('role'));
 
         } catch (\Exception $e) {
             \DB::rollback();
         } finally {
             \DB::commit();
         }
-        return redirect('/home')->with('mensaje', 'Actualización satisfactoria');
+        return redirect('/pacientes')->with('mensaje', 'Cita editada Exitosamente');
     }
 
 
@@ -176,24 +142,13 @@ class CitasController extends Controller
             abort(403, 'Permiso Denegado.');
 
         User::destroy($id);
-        return redirect('/home')->with('mensaje', 'Usuario eliminado satisfactoriamente');
-    }
-
-    public function permisos($id){
-        $role = Role::findOrFail($id);
-        $permisos = Permission::all();
-        return view('roles.permisos', ['role'=>$role, 'permisos'=>$permisos]);
-    }
-    public function pacientes($id){
-        $pacientes = User::role('Paciente')->get($id);
-        $citas = Cita::all();
-        return view('citas.create', ['citas'=>$citas, 'pacientes'=>$pacientes]);
+        return redirect('/citas')->with('mensaje', 'Cita eliminado satisfactoriamente');
     }
 
     public function vermiscitas()
     {
-        //if(!Auth::user()->can('VerMisCitas'))
-        //    abort(403);
+        if(!Auth::user()->can('VerMisCitas'))
+            abort(403);
 
         return view('pacientes.vermiscitas');
     }

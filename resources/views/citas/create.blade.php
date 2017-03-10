@@ -6,7 +6,6 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Solicitar Cita</div>
-
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST"
                               action="{{ url('/citas') }}">
@@ -28,20 +27,20 @@
                                 </div>
                             </div>
 
-                            <div id="medicos" class="form-group{{ $errors->has('medicos') ? ' has-error' : '' }}">
-                                <label for="medicos" class="col-md-4 control-label">Medicos</label>
+                            <div id="medico" class="form-group{{ $errors->has('medico') ? ' has-error' : '' }}">
+                                <label for="medico" class="col-md-4 control-label">Medico</label>
 
                                 <div class="col-md-6">
-                                    <select name="medicos" id="medicos" class="form-control">
+                                    <select name="medico" id="medico" class="form-control">
                                         <option value="">Seleccione</option>
                                         @foreach($medicos as $medico)
                                             <option value="{{ $medico->id }}">{{ $medico->nombre." ". $medico->apellido ." (". $medico->especialidad->nombre . ")"}}</option>
                                         @endforeach
                                     </select>
 
-                                    @if ($errors->has('medicos'))
+                                    @if ($errors->has('medico'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('medicos') }}</strong>
+                                        <strong>{{ $errors->first('medico') }}</strong>
                                     </span>
                                     @endif
                                 </div>
@@ -59,7 +58,18 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="form-group{{ $errors->has('hora_cita') ? ' has-error' : '' }}">
+                                <label for="hora_cita" class="col-md-4 control-label">Hora Cita</label>
 
+                                <div class="col-md-6">
+                                    <input type="time" name="hora_cita" id="timepicker" size="12" value="{{ old('hora_cita') }}" />
+                                    @if ($errors->has('hora_cita'))
+                                        <span class="help-block">
+                                          <strong>{{ $errors->first('hora_cita') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="form-group {{$errors->has('status') ? 'has-error' : ''}}">
                                 <label for="status" class="col-md-4 control-label">Status</label>
                                 <div class="col-md-6">
@@ -76,19 +86,6 @@
                                     </span>
                                 @endif
                             </div>
-
-                            <div class="form-group {{$errors->has('observaciones') ? 'has-error' : ''}}">
-                                <label for="observaciones" class="col-md-4 control-label">Observaciones</label>
-                                <div class="col-md-6">
-                                    <input type="text" name="text" id="observaciones" value="{{ old('observaciones') }}" />
-                                </div>
-                                @if($errors->has('observaciones'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('observaciones') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
@@ -103,3 +100,4 @@
         </div>
     </div>
 @endsection
+

@@ -30,26 +30,32 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function citas()
+    public function cita()
     {
         return $this->hasMany('App\Cita');
     }
-
+    public function especialidad()
+    {
+        return $this->belongsTo('App\Especialidad');
+    }
+    public function recipe()
+    {
+        return $this->hasMany('App\Recipe');
+    }
     public function scopeUMedicos($query)
     {
         return $query->where('especialidad_id', '<>', null);
     }
-    public function especialidad(){
-
-        return $this->belongsTo('App\Especialidad');
-    }
-
-    public function scopeNombre($query, $nombre){
+    public function scopeNombre($query, $nombre)
+    {
         return $query->where('nombre', 'like', '%'.$nombre.'%');
     }
-
-    public function scopeApellido($query, $apellido){
+    public function scopeApellido($query, $apellido)
+    {
         return $query->orWhere('apellido', 'like', '%'.$apellido.'%');
     }
-
+    public function scopeCedula($query, $cedula)
+    {
+        return $query->orWhere('cedula', 'like', '%'.$cedula.'%');
+    }
 }

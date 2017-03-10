@@ -18,12 +18,27 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Listado de Usuarios</div>
                     <div class="panel-body">
-                        @if(Auth::user()->can('RegistrarUsuario'))
-                        <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
-                            <i class="fa fa-user"></i> Nuevo Usuario
-                        </a>
-                        @endif
-
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if(Auth::user()->can('RegistrarUsuario'))
+                                    <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
+                                        <i class="fa fa-user"></i> Nuevo Usuario
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="col-lg-6">
+                                {{--<form action="{{ url('/usuarios') }}" method="get">
+                                    <div class="input-group">
+                                        <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar..."
+                                        value="{{ $buscar }}">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </form>--}}
+                            </div>
+                        </div>
+                        <br>
                         <table class="table table-bordered">
                             <tr>
                                 <th>Nombre</th>
@@ -62,6 +77,11 @@
                                         </button>
                                     </td>              </tr>
                             @endforeach
+                            <tr>
+                                {{--<td colspan="7" class="text-center">
+                                    {{ $users->appends(['buscar'=>$buscar])->links() }}
+                                </td>--}}
+                            </tr>
                         </table>
                     </div>
                 </div>

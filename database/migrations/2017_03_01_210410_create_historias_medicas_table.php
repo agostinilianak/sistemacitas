@@ -13,7 +13,24 @@ class CreateHistoriasMedicasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('historias_medicas', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('citas_id')->unsigned();
+            $table->foreign('citas_id')->references('id')->on('citas');
+            $table->integer('paciente_id')->unsigned();
+            $table->foreign('paciente_id')->references('id')->on('users');
+            $table->integer('especialidad_id')->unsigned();
+            $table->foreign('especialidad_id')->references('id')->on('especialidades');
+            $table->integer('medico_id')->unsigned();
+            $table->foreign('medico_id')->references('id')->on('users');
+            $table->text('motivoconsulta');
+            $table->text('a_familiares', 300);
+            $table->text('a_personales', 300);
+            $table->text('examenfisico', 300);
+            $table->text('indicacionesHM', 500);
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -23,6 +40,6 @@ class CreateHistoriasMedicasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('historias_medicas');
     }
 }

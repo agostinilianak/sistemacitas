@@ -16,11 +16,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Listado de Pacientes
-
-                    </div>
-
+                    <div class="panel-heading">Listado de Pacientes<div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -33,14 +29,14 @@
                             <div class="col-lg-6">
                                 <form action="{{ url('/pacientes') }}" method="get">
                                     <div class="input-group">
-                                        <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar ..."
+                                        <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar..."
                                         value="{{ $buscar }}">
                                         <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                                    </span>
-                                    </div><!-- /input-group -->
+                                        </span>
+                                    </div>
                                 </form>
-                            </div><!-- /.col-lg-6 -->
+                            </div>
                         </div>
                         <br>
                         <table class="table table-bordered">
