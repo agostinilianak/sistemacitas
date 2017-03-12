@@ -302,17 +302,17 @@ class UsersController extends Controller
 
         $citas = Cita::all();
         $paciente = User::findOrFail($id);
-        $medico = User::role('Medico')->get();
+        $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.create', ['citas'=>$citas, 'paciente'=> $paciente, 'medico' => $medico, 'especialidades' =>$especialidades]);
+        return view('citas.create', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
     public function editarcita($id)
     {
         $citas = Cita::all();
         $paciente = User::findOrFail($id);
-        $medico = User::role('Medico')->get();
+        $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.edit', ['citas'=>$citas, 'paciente'=> $paciente, 'medico' => $medico, 'especialidades' =>$especialidades]);
+        return view('citas.edit', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
 
 }
