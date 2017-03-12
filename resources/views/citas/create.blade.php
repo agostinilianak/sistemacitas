@@ -70,22 +70,6 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group {{$errors->has('status') ? 'has-error' : ''}}">
-                                <label for="status" class="col-md-4 control-label">Status</label>
-                                <div class="col-md-6">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="">Seleccione: </option>
-                                        <option value="solicitadas" @if(old('status')=='solicitadas') selected @endif>Solicitada</option>
-                                        <option value="concluidas" @if(old('status')=='concluidas') selected @endif>Concluida</option>
-                                        <option value="canceladas" @if(old('status')=='canceladas') selected @endif>Cancelada</option>
-                                    </select>
-                                </div>
-                                @if($errors->has('status'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('status') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">

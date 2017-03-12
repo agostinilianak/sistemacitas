@@ -34,19 +34,19 @@
                                     <td>{{ $cita->medico->nombre." ". $cita->medico->apellido ." (". $cita->medico->especialidad->nombre . ")"}}</td>
                                     <td>{{ $cita->fecha_cita }}</td>
                                     <td>{{ $cita->hora_cita }}</td>
-                                    <td>{{ $cita->status }}</td>
+                                    <td>{{ ucfirst($cita->status) }}</td>
                                     @if(Auth::user()->can('EditarCita'))
                                     <td>
-                                            <a href="{{ url('citas/'.$cita->id.'/edit') }}"
-                                               class="btn btn-warning">
-                                                <i class="fa fa-id-card"></i>
+                                            <a href="{{ url('citas/'.$cita->paciente->id.'/edit') }}"
+                                               class="btn btn-primary">
+                                                <i class="fa fa-pencil"></i>
                                             </a>
                                     </td>
                                     @endif
                                     @if(Auth::user()->can('CambiarStatusCita'))
                                         <td>
-                                            <a href="{{ url('citas/'.$cita->id.'/edit') }}"
-                                               class="btn btn-warning">
+                                            <a href="{{ url('citas/'.$cita->paciente->id.'/cambiarstatuscita') }}"
+                                               class="btn btn-primary">
                                                 <i class="fa fa-id-card"></i>
                                             </a>
                                         </td>

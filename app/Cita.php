@@ -17,17 +17,14 @@ class Cita extends Model
     {
         return $this->belongsTo('App\User', 'paciente_id');
     }
-
-    public function especialidad()
-    {
-        return $this->hasOne('App\Especialidad', 'especialidad_id');
-    }
-
-    public function medicos()
+    public function medico()
     {
         return $this->belongsTo('App\User', 'medico_id');
     }
-
+    public function especialidad()
+    {
+        return $this->belongsTo('App\Especialidad', 'especialidad_id');
+    }
     public function historiaMedica()
     {
         return $this->hasOne('App\HistoriaMedica');

@@ -17,15 +17,15 @@ class Especialidad extends Model
 
     public function medico()
     {
-        return $this->hasOne('App\User');
+        return $this->hasMany('App\User');
+    }
+    public function usuario()
+    {
+        return $this->hasMany('App\User');
     }
     public function cita()
     {
         return $this->hasMany('App\Cita');
-    }
-    public function usuarios()
-    {
-        return $this->hasMany('App\Users');
     }
     public function historiaMedica()
     {

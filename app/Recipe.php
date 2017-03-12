@@ -16,7 +16,7 @@ class Recipe extends Model
     }
     public function historiaMedica()
     {
-        return $this->belongsTo('App\HistoriaMedica');
+        return $this->hasOne('App\HistoriaMedica');
     }
     public function farmaceuta()
     {

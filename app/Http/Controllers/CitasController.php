@@ -35,8 +35,8 @@ class CitasController extends Controller
     {
         $paciente = User::role('Paciente')->get();
         $medico = User::role('Medico')->get();
-        $especialidades =Especialidad::all();
-        return view('citas.create', ['especialidades'=>$especialidades, 'paciente'=>$paciente, 'medico'=>$medico]);
+        $especialidad =Especialidad::all();
+        return view('citas.create', ['especialidad'=>$especialidad, 'paciente'=>$paciente, 'medico'=>$medico]);
     }
 
     /**
@@ -48,6 +48,7 @@ class CitasController extends Controller
     public function store(Request $request)
     {
         $medico = User::findOrFail($request->input('medico'));
+
         try {
             \DB::beginTransaction();
 
@@ -57,7 +58,7 @@ class CitasController extends Controller
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),
-                'status' => $request->input('status'),
+                'status' => ($request->input('status')!='')?$request->input('status'):'solicitada',
             ]);
 
         } catch (\Exception $e) {
@@ -88,9 +89,6 @@ class CitasController extends Controller
      */
     public function edit($id)
     {
-        if(!Auth::user()->can('EditarCita'))
-            abort(403,'Acceso Prohibido');
-
         $paciente = User::role('Paciente')->get();
         $medico = User::role('Medico')->get();
         $especialidades = Especialidad::all();
@@ -106,7 +104,7 @@ class CitasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $medico = User::findOrFail($request->input('medicos'));
+        $medico = User::findOrFail($request->input('medico'));
 
         try {
             \DB::beginTransaction();
@@ -118,7 +116,6 @@ class CitasController extends Controller
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),
                 'status' => $request->input('status'),
-                'observaciones' => $request->input('observaciones'),
             ]);
 
         } catch (\Exception $e) {
@@ -126,7 +123,7 @@ class CitasController extends Controller
         } finally {
             \DB::commit();
         }
-        return redirect('/pacientes')->with('mensaje', 'Cita editada Exitosamente');
+        return redirect('/citas')->with('mensaje', 'Cita editada Exitosamente');
     }
 
 
