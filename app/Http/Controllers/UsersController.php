@@ -300,11 +300,10 @@ class UsersController extends Controller
         if(!Auth::user()->can('SolicitarCita'))
             abort(403);
 
-        $citas = Cita::all();
         $paciente = User::findOrFail($id);
         $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.create', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
+        return view('citas.create', ['paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
     public function editarcita($id)
     {

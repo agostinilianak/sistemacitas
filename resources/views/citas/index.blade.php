@@ -37,7 +37,7 @@
                                     <td>{{ ucfirst($cita->status) }}</td>
                                     @if(Auth::user()->can('EditarCita'))
                                     <td>
-                                            <a href="{{ url('citas/'.$cita->paciente->id.'/edit') }}"
+                                            <a href="{{ url('citas/'.$cita->id.'/edit') }}"
                                                class="btn btn-primary">
                                                 <i class="fa fa-pencil"></i>
                                             </a>

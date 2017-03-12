@@ -89,10 +89,11 @@ class CitasController extends Controller
      */
     public function edit($id)
     {
-        $paciente = User::role('Paciente')->get();
-        $medico = User::role('Medico')->get();
+        $cita = Cita::findOrFail($id);
+        $paciente = User::findOrFail($cita->paciente_id);
+        $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.edit', ['especialidades'=>$especialidades, 'paciente'=>$paciente, 'medico'=>$medico]);
+        return view('citas.edit', ['cita'=>$cita, 'especialidades'=>$especialidades, 'paciente'=>$paciente, 'medicos'=>$medicos]);
     }
 
     /**
@@ -104,14 +105,14 @@ class CitasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $medico = User::findOrFail($request->input('medico'));
+        $medicos = User::findOrFail($request->input('medico'));
 
         try {
             \DB::beginTransaction();
             $cita=Cita::findOrFail($id);
             $cita->update([
                 'paciente_id' => $request->input('paciente_id'),
-                'especialidad_id' => $medico->especialidad->id,
+                'especialidad_id' => $medicos->especialidad->id,
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),

@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST"
-                              action="{{ url('/citas/'.$cita->paciente->id) }}">
+                              action="{{ url('/citas/'.$cita->id) }}">
                             {{ method_field('PUT') }}
                             {{ csrf_field() }}
 
@@ -17,8 +17,8 @@
                                 <label for="paciente" class="col-md-4 control-label">Paciente</label>
 
                                 <div class="col-md-6">
-                                    <input id="paciente" type="text" class="form-control" name="paciente"
-                                           value="{{ $paciente->nombre." ".$paciente->apellido." ". $paciente->cedula or old('paciente') }}" autofocus readonly>
+                                   <input id="paciente" type="text" class="form-control" name="paciente"
+                                           value="{{ $paciente->nombre." ".$paciente->apellido." ". $paciente->cedula }}" autofocus readonly>
                                     <input type="hidden" id="paciente_id" name="paciente_id" value="{{ $paciente->id }}">
                                     @if($errors->has('paciente'))
                                         <span class="help-block">
@@ -35,7 +35,7 @@
                                     <select name="medico" id="medico" class="form-control">
                                         <option value="">Seleccione</option>
                                         @foreach($medicos as $medico)
-                                            <option value="{{ $medico->id or old('medico')}}">{{ $medico->nombre." ". $medico->apellido ." (". $medico->especialidad->nombre . ")"}}</option>
+                                            <option value="{{ $medico->id }}" @if($medico->id==$cita->medico_id) selected @endif>{{ $medico->nombre." ". $medico->apellido ." (". $medico->especialidad->nombre . ")"}}</option>
                                         @endforeach
                                     </select>
 
