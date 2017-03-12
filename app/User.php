@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -32,7 +33,7 @@ class User extends Authenticatable
 
     public function cita()
     {
-        return $this->hasMany('App\Cita');
+        return $this->hasMany('App\Cita', Auth::user()->hasRole('Medico')?'medico_id':'paciente_id');
     }
     public function especialidad()
     {

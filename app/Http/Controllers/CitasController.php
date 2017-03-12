@@ -7,6 +7,8 @@ use App\Especialidad;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
+
 
 class CitasController extends Controller
 {
@@ -47,8 +49,17 @@ class CitasController extends Controller
      */
     public function store(Request $request)
     {
-        $medico = User::findOrFail($request->input('medico'));
+        $v = Validator::make($request->all(), [
+            'medico' => 'required',
+            'fecha_cita' => 'required',
+            'hora_cita' => 'required',
+        ]);
 
+        if ($v->fails()) {
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+
+        $medico = User::findOrFail($request->input('medico'));
         try {
             \DB::beginTransaction();
 
@@ -105,28 +116,27 @@ class CitasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $medicos = User::findOrFail($request->input('medico'));
-
+        $medico = User::findOrFail($request->input('medico'));
         try {
             \DB::beginTransaction();
-            $cita=Cita::findOrFail($id);
+            $cita = Cita::findOrFail($id);
             $cita->update([
                 'paciente_id' => $request->input('paciente_id'),
-                'especialidad_id' => $medicos->especialidad->id,
+                'especialidad_id' => $medico->especialidad->id,
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),
-                'status' => $request->input('status'),
+                'status' => ($request->input('status')!='')?$request->input('status'):'solicitada',
             ]);
 
         } catch (\Exception $e) {
             \DB::rollback();
+
         } finally {
             \DB::commit();
         }
         return redirect('/citas')->with('mensaje', 'Cita editada Exitosamente');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -140,15 +150,20 @@ class CitasController extends Controller
             abort(403, 'Permiso Denegado.');
 
         User::destroy($id);
-        return redirect('/citas')->with('mensaje', 'Cita eliminado satisfactoriamente');
+        return redirect('/citas')->with('mensaje', 'Cita eliminada satisfactoriamente');
     }
 
-    public function vermiscitas()
+    public function cambiarstatuscita($id)
     {
-        if(!Auth::user()->can('VerMisCitas'))
+        if(!Auth::user()->can('CambiarStatusCita'))
             abort(403);
 
-        return view('pacientes.vermiscitas');
+        $cita = Cita::findOrFail($id);
+        $paciente = User::findOrFail($cita->paciente_id);
+        $medico = User::findOrFail($cita->medico_id);
+        $especialidad = Especialidad::all();
+        return view('citas.cambiarstatuscita', ['cita'=>$cita,'paciente'=>$paciente, 'medico'=>$medico, 'especialidad'=>$especialidad]);
     }
+
 
 }

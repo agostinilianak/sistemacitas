@@ -56,7 +56,7 @@
                                     <td>{{ $user->celular }}</td>
                                     <td>{{ $user->especialidad->nombre }}</td>
                                     <td>
-                                        <a href="{{ url('usuarios/'.$user->id.'/ ') }}"
+                                        <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
                                            class="btn btn-warning">
                                             <i class="fa fa-id-card"></i>
                                         </a>

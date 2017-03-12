@@ -130,6 +130,7 @@ class RolesController extends Controller
 
         }catch(\Exception $e){
             \DB::rollback();
+            var_dump($e);
         }finally{
             \DB::commit();
         }

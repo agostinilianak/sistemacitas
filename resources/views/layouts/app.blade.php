@@ -70,8 +70,8 @@
                             <li><a href="{{ url('/medicos') }}">Medicos</a></li>
                         @endhasrole
                         @hasrole('Medico')
-                            <li><a href="{{ url('/citas') }}">Citas</a></li>
                             <li><a href="{{ url('/medicos') }}">Medicos</a></li>
+                            <li><a href="{{ url('/medicos/vermiscitas') }}">Ver mis Citas</a></li>
                             <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
                             <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>
                             <li><a href="{{ url('/historiasmedicas') }}">Historias Medicas</a></li>
@@ -129,7 +129,7 @@
         }else {
             $('#especialidadDiv').hide();
         }
-    });
+    }).trigger('change');
 </script>
 
 </body>

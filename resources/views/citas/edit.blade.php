@@ -28,9 +28,8 @@
                                 </div>
                             </div>
 
-                            <div id="medicos" class="form-group{{ $errors->has('medico') ? ' has-error' : '' }}">
-                                <label for="medico" class="col-md-4 control-label">Medicos</label>
-
+                            <div id="medico" class="form-group{{ $errors->has('medico') ? ' has-error' : '' }}">
+                                <label for="medico" class="col-md-4 control-label">Medico</label>
                                 <div class="col-md-6">
                                     <select name="medico" id="medico" class="form-control">
                                         <option value="">Seleccione</option>
@@ -38,7 +37,6 @@
                                             <option value="{{ $medico->id }}" @if($medico->id==$cita->medico_id) selected @endif>{{ $medico->nombre." ". $medico->apellido ." (". $medico->especialidad->nombre . ")"}}</option>
                                         @endforeach
                                     </select>
-
                                     @if ($errors->has('medico'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('medico') }}</strong>
@@ -49,12 +47,23 @@
 
                             <div class="form-group{{ $errors->has('fecha_cita') ? ' has-error' : '' }}">
                                 <label for="fecha_cita" class="col-md-4 control-label">Fecha Cita</label>
-
                                 <div class="col-md-6">
-                                    <input type="date" name="fecha_cita" id="datepicker" size="12" value="{{ old('fecha_cita') }}" />
+                                    <input type="date" name="fecha_cita" id="datepicker" size="12" value="{{isset($old)? $old->input('fecha_cita') : $cita->fecha_cita}}" />
                                     @if ($errors->has('fecha_cita'))
                                         <span class="help-block">
                                           <strong>{{ $errors->first('fecha_cita') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('hora_cita') ? ' has-error' : '' }}">
+                                <label for="hora_cita" class="col-md-4 control-label">Hora Cita</label>
+                                <div class="col-md-6">
+                                    <input type="time" name="hora_cita" id="timepicker" size="12" value="{{isset($old)? $old->input('hora_cita') : $cita->hora_cita}}" />
+                                    @if ($errors->has('hora_cita'))
+                                        <span class="help-block">
+                                          <strong>{{ $errors->first('hora_cita') }}</strong>
                                         </span>
                                     @endif
                                 </div>

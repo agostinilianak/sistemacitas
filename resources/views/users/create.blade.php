@@ -72,9 +72,9 @@
                                 <label for="sexo" class="col-md-4 control-label">Sexo</label>
 
                                 <div class="col-md-6">
-                                    <label><input type="radio" id="sexo" name="sexo" value="M" @if(old('sexo')=='M') checked @endif/>Masculino</label>
+                                    <label><input type="radio" id="sexo" name="sexo" value="M" @if('sexo'=='M' or old('sexo')=='M') checked @endif/>Masculino</label>
                                     <br>
-                                    <label><input type="radio" id="sexo" name="sexo" value="F" @if(old('sexo')=='F') checked @endif/>Femenino</label>
+                                    <label><input type="radio" id="sexo" name="sexo" value="F" @if('sexo'=='F' or old('sexo')=='F')checked @endif/>Femenino</label>
 
                                     @if ($errors->has('sexo'))
                                         <span class="help-block">

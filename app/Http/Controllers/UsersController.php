@@ -40,9 +40,10 @@ class UsersController extends Controller
         if (!Auth::user()->can('RegistrarUsuario'))
             abort(403, 'Acceso Prohibido');
 
+        $user= User::all();
         $roles = Role::all();
         $especialidades = Especialidad::all();
-        return view('users.create', ['roles' => $roles, 'especialidades'=>$especialidades]);
+        return view('users.create', ['user'=>$user, 'roles' => $roles, 'especialidades'=>$especialidades]);
     }
 
     /**
@@ -53,7 +54,6 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->input());
         $v = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
@@ -67,7 +67,6 @@ class UsersController extends Controller
             'password' => 'required|min:6|confirmed',
             'role' => 'required',
             'especialidad'=> 'required_if:role,Medico',
-
         ]);
 
         if ($v->fails()) {
@@ -125,8 +124,9 @@ class UsersController extends Controller
         //    abort(403,'Acceso Prohibido');
 
         $roles = Role::all();
+        $especialidades = Especialidad::all();
         $user = User::findOrFail($id);
-        return view('users.edit', ['user' => $user, 'roles' => $roles]);
+        return view('users.edit', ['user' => $user, 'roles' => $roles, 'especialidades'=>$especialidades]);
     }
 
     /**
@@ -262,6 +262,23 @@ class UsersController extends Controller
 
         return view('medicos.index', ['users' => $medicos, 'buscar'=>$buscar]);
     }
+    public function vermiscitasmedicosbuscar()
+    {
+        $pacientes = null;
+        $buscarpacientes = \Request::get('buscarpacientes');
+        if($buscarpacientes!='')
+            $pacientes = User::role('Paciente')
+                ->nombre($buscarpacientes)
+                ->apellido($buscarpacientes)
+                ->cedula($buscarpacientes)
+                ->paginate();
+        else
+            $pacientes = User::role('Paciente')->paginate();
+
+        return view('medicos.vermiscitas', ['users' => $pacientes, 'buscarpacientes'=>$buscarpacientes]);
+    }
+
+
     public function usuarios()
     {
         $usuarios = null;

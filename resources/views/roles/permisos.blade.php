@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST"
-                              action="{{ url('/roles/'.$role->id.'/permisos') }}">
+                              action="{{ url('/roles/'.$role->id.'/asignarpermisos') }}">
                             {{ method_field('PUT') }}
                             {{ csrf_field() }}
 

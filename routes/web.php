@@ -28,9 +28,11 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::resource('/permisos', 'PermissionsController');
     Route::resource('/citas', 'CitasController');
     Route::get('/roles/{id}/permisos','RolesController@permisos');
+    Route::put('/roles/{id}/asignarpermisos','RolesController@asignarPermisos');
     Route::get('/usuarios/{id}/permisos','UsersController@permisos');
+    Route::put('/usuarios/{id}/asignarpermisos','UsersController@asignarPermisos');
     Route::get('/citas/{id}/solicitarcita','UsersController@solicitarcita');
-    Route::get('/vermiscitas', 'CitasController@vermiscitas');
+
     //Route::put('/roles/{id}/asignarpermisos','RolesController@asignarPermisos');
     //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
     //Route::get('/miscursos', 'HomeController@miscursos');
@@ -39,23 +41,20 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 });
 
 Route::group(['middleware' => ['role:Secretaria']], function () {
-    //
+
 });
 
 Route::group(['middleware' => ['role:Farmaceuta']], function () {
-    //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
-    //Route::get('/miscursos', 'HomeController@miscursos');
-    //Route::get('/cursos/{id}/postular', 'CursosController@postular');
+
 });
 
 Route::group(['middleware' => ['role:Medico']], function () {
-    //Route::get('/cursosdisponibles', 'HomeController@cursosdisponibles');
-    //Route::get('/miscursos', 'HomeController@miscursos');
-    //Route::get('/cursos/{id}/postular', 'CursosController@postular');
+    Route::get('/medicos/vermiscitas', 'HistoriasMedicasController@vermiscitasmedico');
+
 });
 
 Route::group(['middleware' => ['role:Paciente']], function () {
-    //Route::get('/vermiscitas', 'CitasController@vermiscitas');
+    Route::get('/vermiscitas', 'HomeController@vermiscitas');
 
 });
 
