@@ -164,6 +164,7 @@
                                 </div>
                             </div>
 
+                            @if(!(Auth::user()->hasRole('Secretaria')))
                             <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                                 <label for="role" class="col-md-4 control-label">Rol</label>
 
@@ -182,6 +183,7 @@
                                     @endif
                                 </div>
                             </div>
+                            @endif
 
                             <div id="especialidadDiv" class="form-group{{ $errors->has('especialidad') ? ' has-error' : '' }}" style="display: none">
                                 <label for="especialidad" class="col-md-4 control-label">Especialidad</label>

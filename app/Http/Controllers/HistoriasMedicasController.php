@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Historia_Medica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\SoftDeletes;
 use App\User;
 use App\Especialidad;
 use App\Cita;
@@ -15,9 +17,14 @@ class HistoriasMedicasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+
     }
 
     /**
@@ -27,7 +34,14 @@ class HistoriasMedicasController extends Controller
      */
     public function create()
     {
-        //
+        if (!Auth::user()->can('CrearHistoriaMedica'))
+            abort(403, 'Acceso Prohibido');
+
+        $user= User::all();
+        $roles = Role::all();
+        $especialidades = Especialidad::all();
+        $citas= Cita::all();
+        return view('historiasmedicas.create', ['user'=>$user, 'roles' => $roles, 'especialidades'=>$especialidades, 'citas'=>$citas]);
     }
 
     /**
@@ -90,6 +104,7 @@ class HistoriasMedicasController extends Controller
         if(!Auth::user()->can('ModuloMedico'))
             abort(403);
 
-        return view('medicos.vermiscitas');
+        $hmedicas=Historia_Medica::all();
+        return view('medicos.vermiscitas', ['hmedicas'=>$hmedicas]);
     }
 }

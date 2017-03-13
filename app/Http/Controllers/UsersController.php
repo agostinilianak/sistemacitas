@@ -65,7 +65,7 @@ class UsersController extends Controller
             'direccion' => 'max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required',
+            'role' => Auth::user()->hasRole('Secretaria')? '':'required',
             'especialidad'=> 'required_if:role,Medico',
         ]);
 
@@ -90,7 +90,7 @@ class UsersController extends Controller
                 'especialidad_id' => ($request->input('especialidad')!='')?$request->input('especialidad'):NULL,
             ]);
 
-            $user->assignRole($request->input('role'));
+            $user->assignRole(Auth::user()->hasRole('Secretaria')? 'Paciente':$request->input('role'));
 
 
         } catch (\Exception $e) {

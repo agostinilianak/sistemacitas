@@ -13,7 +13,7 @@ class CreateHistoriasMedicasTable extends Migration
      */
     public function up()
     {
-        Schema::create('historias_medicas', function (Blueprint $table) {
+        Schema::create('historiasmedicas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('citas_id')->unsigned();
             $table->foreign('citas_id')->references('id')->on('citas');
@@ -40,6 +40,6 @@ class CreateHistoriasMedicasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historias_medicas');
+        Schema::dropIfExists('historiasmedicas');
     }
 }
