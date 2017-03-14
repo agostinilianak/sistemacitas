@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Historia_Medica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SoftDeletes;
 use App\User;
 use App\Especialidad;
 use App\Cita;
+use App\HistoriaMedica;
 
 class HistoriasMedicasController extends Controller
 {
@@ -32,16 +32,16 @@ class HistoriasMedicasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id=null)
     {
         if (!Auth::user()->can('CrearHistoriaMedica'))
             abort(403, 'Acceso Prohibido');
 
-        $user= User::all();
-        $roles = Role::all();
-        $especialidades = Especialidad::all();
-        $citas= Cita::all();
-        return view('historiasmedicas.create', ['user'=>$user, 'roles' => $roles, 'especialidades'=>$especialidades, 'citas'=>$citas]);
+        $cita = Cita::findOrFail($id);
+        $user = $cita->paciente;
+        $medico = $cita->medico;
+        $especialidad = $cita->especialidad;
+        return view('historiasmedicas.create', ['user'=>$user, 'cita'=>$cita, 'especialidad'=>$especialidad, 'medico'=>$medico]);
     }
 
     /**
@@ -52,7 +52,28 @@ class HistoriasMedicasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            \DB::beginTransaction();
+
+            HistoriaMedica::create([
+                'cita_id'=>$request->input('cita_id'),
+                'paciente_id' => $request->input('paciente_id'),
+                'especialidad_id' => $request->input('especialidad_id'),
+                'medico_id' => $request->input('medico_id'),
+                'motivoconsulta' => $request->input('motivoconsulta'),
+                'a_familiares' => $request->input('a_familiares'),
+                'a_personales' => $request->input('a_personales'),
+                'examenfisico' => $request->input('examenfisico'),
+                'indicacionesHM' => $request->input('indicacionesHM'),
+            ]);
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            var_dump($e);
+        } finally {
+            \DB::commit();
+        }
+        return redirect('/medicos/vermiscitas')->with('mensaje', 'Historia Medica creada Exitosamente');
     }
 
     /**
@@ -104,7 +125,8 @@ class HistoriasMedicasController extends Controller
         if(!Auth::user()->can('ModuloMedico'))
             abort(403);
 
-        $hmedicas=Historia_Medica::all();
-        return view('medicos.vermiscitas', ['hmedicas'=>$hmedicas]);
+        $hmedica=HistoriaMedica::all();
+        $citas=Cita::where('medico_id','=', Auth::user()->id )->paginate();
+        return view('medicos.vermiscitas', ['hmedica'=>$hmedica, 'citas'=>$citas]);
     }
 }

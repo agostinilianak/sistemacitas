@@ -25,7 +25,7 @@ class CitasController extends Controller
     public function index()
     {
         $citas = Cita::paginate(10);
-        return view('citas.index', ['citas'=>$citas]);
+        return view('citas.index', ['citas' => $citas]);
     }
 
     /**
@@ -37,8 +37,8 @@ class CitasController extends Controller
     {
         $paciente = User::role('Paciente')->get();
         $medico = User::role('Medico')->get();
-        $especialidad =Especialidad::all();
-        return view('citas.create', ['especialidad'=>$especialidad, 'paciente'=>$paciente, 'medico'=>$medico]);
+        $especialidad = Especialidad::all();
+        return view('citas.create', ['especialidad' => $especialidad, 'paciente' => $paciente, 'medico' => $medico]);
     }
 
     /**
@@ -69,7 +69,7 @@ class CitasController extends Controller
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),
-                'status' => ($request->input('status')!='')?$request->input('status'):'solicitada',
+                'status' => ($request->input('status') != '') ? $request->input('status') : 'solicitada',
             ]);
 
         } catch (\Exception $e) {
@@ -104,7 +104,7 @@ class CitasController extends Controller
         $paciente = User::findOrFail($cita->paciente_id);
         $medicos = User::role('Medico')->get();
         $especialidades = Especialidad::all();
-        return view('citas.edit', ['cita'=>$cita, 'especialidades'=>$especialidades, 'paciente'=>$paciente, 'medicos'=>$medicos]);
+        return view('citas.edit', ['cita' => $cita, 'especialidades' => $especialidades, 'paciente' => $paciente, 'medicos' => $medicos]);
     }
 
     /**
@@ -126,7 +126,7 @@ class CitasController extends Controller
                 'medico_id' => $medico->id,
                 'fecha_cita' => $request->input('fecha_cita'),
                 'hora_cita' => $request->input('hora_cita'),
-                'status' => ($request->input('status')!='')?$request->input('status'):'solicitada',
+                'status' => ($request->input('status') != '') ? $request->input('status') : 'solicitada',
             ]);
 
         } catch (\Exception $e) {
@@ -155,15 +155,13 @@ class CitasController extends Controller
 
     public function cambiarstatuscita($id)
     {
-        if(!Auth::user()->can('CambiarStatusCita'))
+        if (!Auth::user()->can('CambiarStatusCita'))
             abort(403);
 
         $cita = Cita::findOrFail($id);
         $paciente = User::findOrFail($cita->paciente_id);
         $medico = User::findOrFail($cita->medico_id);
         $especialidad = Especialidad::all();
-        return view('citas.cambiarstatuscita', ['cita'=>$cita,'paciente'=>$paciente, 'medico'=>$medico, 'especialidad'=>$especialidad]);
+        return view('citas.cambiarstatuscita', ['cita' => $cita, 'paciente' => $paciente, 'medico' => $medico, 'especialidad' => $especialidad]);
     }
-
-
 }

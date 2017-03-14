@@ -43,10 +43,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Recipe');
     }
-    public function scopeUMedicos($query)
-    {
-        return $query->where('especialidad_id', '<>', null);
-    }
+
     public function scopeNombre($query, $nombre)
     {
         return $query->where('nombre', 'like', '%'.$nombre.'%');

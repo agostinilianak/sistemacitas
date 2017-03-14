@@ -27,15 +27,15 @@
                                 @endif
                             </div>
                             <div class="col-lg-6">
-                                {{--<form action="{{ url('/usuarios') }}" method="get">
+                                <form action="{{ url('/usuarios') }}" method="get">
                                     <div class="input-group">
-                                        <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar..."
-                                        value="{{ $buscar }}">
+                                        <input type="text" name="buscar" id="buscar" class="form-control"
+                                               placeholder="Buscar por nombre, apellido o cedula" value="{{ $buscar }}">
                                         <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
-                                </form>--}}
+                                </form>
                             </div>
                         </div>
                         <br>
@@ -75,12 +75,13 @@
                                                 data-toggle="modal" data-target="#confirm-delete">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
-                                    </td>              </tr>
+                                    </td>
+                                </tr>
                             @endforeach
                             <tr>
-                                {{--<td colspan="7" class="text-center">
+                                <td colspan="7" class="text-center">
                                     {{ $users->appends(['buscar'=>$buscar])->links() }}
-                                </td>--}}
+                                </td>
                             </tr>
                         </table>
                     </div>

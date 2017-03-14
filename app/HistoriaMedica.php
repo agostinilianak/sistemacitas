@@ -9,6 +9,8 @@ class HistoriaMedica extends Model
 {
     use SoftDeletes;
 
+    protected $table= "historiasmedicas";
+
     protected $fillable = [
         'cita_id','paciente_id', 'especialidad_id', 'medico_id', 'motivoconsulta',
         'a_familiares', 'a_personales','examenfisico', 'indicacionesHM',

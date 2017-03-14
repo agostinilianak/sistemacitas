@@ -8,36 +8,22 @@
                     <div class="panel-heading">Mis Citas</div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-lg-6">
-                                <form action="{{ url('/medicos/vermiscitas') }}" method="get">
-                                    <div class="input-group">
-                                        <input type="text" name="buscarpacientes" id="buscarpacientes"
-                                               class="form-control" placeholder="Buscar...">
-                                        <span class="input-group-btn">
-                                        <button class="btn btn-default" type="submit"><i
-                                                    class="fa fa-search"></i></button>
-                                    </span>
-                                    </div>
-                                </form>
-                            </div>
                             <div class="col-md-12">
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Paciente</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
-                                        <th width="10%" colspan="3">Acciones</th>
+                                        <th width="10%" colspan="4">Acciones</th>
                                     </tr>
                                     @foreach(Auth::user()->cita as $cita)
                                         <tr>
                                             <td>{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ".$cita->paciente->cedula }}</td>
                                             <td>{{ $cita->fecha_cita }}</td>
                                             <td>{{ $cita->hora_cita }}</td>
-                                            <td>{{ ucfirst($cita->status) }}</td>
-                                        </tr>
-                                        @if(Auth::user()->can('CrearHistoriaMedica'))
+                                            @if(Auth::user()->can('CrearHistoriaMedica'))
                                             <td>
-                                                <a href="{{ url('historiasmedicas/create') }}"
+                                                <a href="{{ url('historiasmedicas/create/'.$cita->id) }}"
                                                    class="btn btn-success">
                                                     <i class="fa fa-database" aria-hidden="true"></i>
                                                 </a>
@@ -45,16 +31,24 @@
                                         @endif
                                         @if(Auth::user()->can('ActualizarHistoriaMedica'))
                                             <td>
-                                                <a href="{{ url('historiasmedicas/'.$hmedica->id.'/actualizar') }}"
+                                                <a href="{{ url('historiasmedicas/'.$cita->id.'/actualizar') }}"
                                                    class="btn btn-primary">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                             </td>
                                         @endif
+                                        @if(Auth::user()->can('CambiarStatusCita'))
+                                            <td>
+                                                <a href="{{ url('citas/'.$cita->id.'/cambiarstatuscita') }}"
+                                                   class="btn btn-primary">
+                                                    <i class="fa fa-id-card"></i>
+                                                </a>
+                                            </td>
+                                        @endif
                                         <td>
                                             <button class="btn btn-danger"
-                                                    data-action="{{ url('/historiasmedicas/'.$hmedica->id) }}"
-                                                    data-name="{{ $hmedica->paciente->nombre . " " . $hmedica->paciente->apellido }}"
+                                                    data-action="{{ url('/historiasmedicas/'.$cita->id) }}"
+                                                    data-name="{{ $cita->paciente->nombre . " " . $cita->paciente->apellido }}"
                                                     data-toggle="modal" data-target="#confirm-delete">
                                                 <i class="fa fa-trash fa-1x"></i>
                                             </button>

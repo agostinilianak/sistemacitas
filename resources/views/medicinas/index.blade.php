@@ -3,26 +3,26 @@
 @section('content')
     <div class="container">
         @if(session('mensaje'))
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-info alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Info:</strong> {{ session('mensaje') }}.
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Info:</strong> {{ session('mensaje') }}.
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Listado de Roles</div>
+                    <div class="panel-heading">Listado de Medicinas</div>
                     <div class="panel-body">
                         <div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    @if(Auth::user()->can('CrearRol'))
-                                        <a href="{{ url('/roles/create') }}" class="btn btn-success">
-                                            <i class="fa fa-user"></i> Nuevo Rol
+                                    @if(Auth::user()->hasPermissionTo('CrearMedicina'))
+                                        <a href="{{ url('/medicinas/create') }}" class="btn btn-success" title="Nueva Medicina">
+                                            <i class="fa fa-medkit"></i> Nueva Medicina
                                         </a>
                                     @endif
                                 </div>
@@ -34,36 +34,24 @@
                                 <th>Nombre</th>
                                 <th width="10%" colspan="3">Acciones</th>
                             </tr>
-                            @foreach($roles as $role)
+                            @foreach($medicinas as $medicina)
                                 <tr>
-                                    <td>{{ $role->name }}</td>
-                                    @if(Auth::user()->can('AsignarPermiso'))
-                                    <td>
-                                        <a href="{{ url('roles/'.$role->id.'/permisos') }}" class="btn btn-warning">
-                                            <i class="fa fa-id-card"></i>
-                                        </a>
-                                    </td>
+                                    <td>{{ $medicina->nombre }}</td>
+                                    @if(Auth::user()->hasPermissionTo('EliminarMedicina'))
+                                        <td>
+                                            <button class="btn btn-danger"
+                                                    data-action="{{ url('/medicinas/'.$medicina->id) }}"
+                                                    data-name="{{ $medicina->nombre }}"
+                                                    data-toggle="modal" data-target="#confirm-delete" title="Eliminar Medicina">
+                                                <i class="fa fa-trash fa-1x"></i>
+                                            </button>
+                                        </td>
                                     @endif
-                                    @if(Auth::user()->can('EditarRol'))
-                                    <td>
-                                        <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-primary">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                    </td>
-                                    @endif
-                                    <td>
-                                        <button class="btn btn-danger"
-                                                data-action="{{ url('/roles/'.$role->id) }}"
-                                                data-name="{{ $role->name }}"
-                                                data-toggle="modal" data-target="#confirm-delete">
-                                            <i class="fa fa-trash fa-1x"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <td colspan="4" class="text-center">
-                                    {{ $roles->links() }}
+                                    {{ $medicinas->links() }}
                                 </td>
                             </tr>
                         </table>
@@ -81,8 +69,7 @@
 
                 </div>
                 <div class="modal-body">
-                    <p>¿Seguro que desea eliminar este
-                        registro?</p>
+                    <p>¿Seguro que desea eliminar esta medicina?</p>
                     <p class="nombre"></p>
                 </div>
                 <div class="modal-footer">
@@ -96,7 +83,7 @@
                                 class="btn btn-default"
                                 data-dismiss="modal">Cancelar
                         </button>
-                        @if(Auth::user()->can('EliminarRol'))
+                        @if(Auth::user()->hasPermissionTo('EliminarMedicina'))
                             <button id="delete-btn"
                                     class="btn btn-danger"
                                     title="Eliminar">Eliminar

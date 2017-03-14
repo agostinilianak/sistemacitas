@@ -26,8 +26,16 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::paginate();
-        return view('users.index', ['users' =>$users]);
+        $users = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $users= User::nombre($buscar)
+                ->apellido($buscar)
+                ->cedula($buscar)
+                ->paginate();
+        else
+            $users = User::paginate();
+        return view('users.index', ['users' =>$users, 'buscar'=>$buscar]);
     }
 
     /**
@@ -261,39 +269,6 @@ class UsersController extends Controller
             $medicos = User::role('Medico')->paginate();
 
         return view('medicos.index', ['users' => $medicos, 'buscar'=>$buscar]);
-    }
-    public function vermiscitasmedicosbuscar()
-    {
-        $pacientes = null;
-        $buscarpacientes = \Request::get('buscarpacientes');
-        if($buscarpacientes!='')
-            $pacientes = User::role('Paciente')
-                ->nombre($buscarpacientes)
-                ->apellido($buscarpacientes)
-                ->cedula($buscarpacientes)
-                ->paginate();
-        else
-            $pacientes = User::role('Paciente')->paginate();
-
-        return view('medicos.vermiscitas', ['users' => $pacientes, 'buscarpacientes'=>$buscarpacientes]);
-    }
-
-
-    public function usuarios()
-    {
-        $usuarios = null;
-        $buscar = \Request::get('buscar');
-        if($buscar!='')
-            $usuarios= User::all()
-                ->nombre($buscar)
-                ->apellido($buscar)
-                ->cedula($buscar)
-                ->rol($buscar)
-                ->paginate();
-        else
-            $usuarios = User::all()->paginate();
-
-        return view('usuarios.index', ['usuarios' => $usuarios, 'buscar'=>$buscar]);
     }
     public function farmaceutas()
     {

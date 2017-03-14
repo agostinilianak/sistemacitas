@@ -70,7 +70,6 @@
                             <li><a href="{{ url('/medicos') }}">Medicos</a></li>
                         @endhasrole
                         @hasrole('Medico')
-                            <li><a href="{{ url('/medicos') }}">Medicos</a></li>
                             <li><a href="{{ url('/medicos/vermiscitas') }}">Ver mis Citas</a></li>
                             <li><a href="{{ url('/especialidades') }}">Especialidades</a></li>
                             <li><a href="{{ url('/medicinas') }}">Medicinas</a></li>

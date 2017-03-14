@@ -15,8 +15,8 @@ class CreateHistoriasMedicasTable extends Migration
     {
         Schema::create('historiasmedicas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('citas_id')->unsigned();
-            $table->foreign('citas_id')->references('id')->on('citas');
+            $table->integer('cita_id')->unsigned();
+            $table->foreign('cita_id')->references('id')->on('citas');
             $table->integer('paciente_id')->unsigned();
             $table->foreign('paciente_id')->references('id')->on('users');
             $table->integer('especialidad_id')->unsigned();

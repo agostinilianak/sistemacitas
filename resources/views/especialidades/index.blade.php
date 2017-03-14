@@ -15,14 +15,14 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Listado de Permisos</div>
+                    <div class="panel-heading"> Listado de Especialidades</div>
                     <div class="panel-body">
                         <div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    @if(Auth::user()->can('CrearPermiso'))
-                                        <a href="{{ url('/permisos/create') }}" class="btn btn-success">
-                                            <i class="fa fa-user"></i> Nuevo Permiso
+                                    @if(Auth::user()->can('CrearEspecialidad'))
+                                        <a href="{{ url('/especialidades/create') }}" class="btn btn-success">
+                                            <i class="fa fa-user"></i> Nueva Especialidad
                                         </a>
                                     @endif
                                 </div>
@@ -32,22 +32,22 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>Nombre</th>
-                                <th width="10%" colspan="2">Acciones</th>
+                                <th width="10%" colspan="3">Acciones</th>
                             </tr>
-                            @foreach($permissions as $per)
+                            @foreach($especialidades as $especialidad)
                                 <tr>
-                                    <td>{{ $per->name }}</td>
-                                    @if(Auth::user()->can('EditarPermisos'))
+                                    <td>{{ $especialidad->nombre }}</td>
+                                    @if(Auth::user()->can('EditarEspecialidad'))
                                     <td>
-                                        <a href="{{ url('permisos/'.$per->id.'/edit') }}" class="btn btn-primary">
+                                        <a href="{{ url('especialidades/'.$especialidad->id.'/edit') }}" class="btn btn-primary">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
                                     @endif
                                     <td>
                                         <button class="btn btn-danger"
-                                                data-action="{{ url('/permisos/'.$per->id) }}"
-                                                data-name="{{ $per->name }}"
+                                                data-action="{{ url('$/especialidades/'.$especialidad->id) }}"
+                                                data-name="{{ $especialidad->nombre}}"
                                                 data-toggle="modal" data-target="#confirm-delete">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
@@ -55,8 +55,8 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="3" class="text-center">
-                                    {{ $permissions->links() }}
+                                <td colspan="4" class="text-center">
+                                    {{ $especialidades->links() }}
                                 </td>
                             </tr>
                         </table>
@@ -89,11 +89,11 @@
                                 class="btn btn-default"
                                 data-dismiss="modal">Cancelar
                         </button>
-                        @if(Auth::user()->can('EliminarPermiso'))
-                        <button id="delete-btn"
-                                class="btn btn-danger"
-                                title="Eliminar">Eliminar
-                        </button>
+                        @if(Auth::user()->can('EliminarEspecialidad'))
+                            <button id="delete-btn"
+                                    class="btn btn-danger"
+                                    title="Eliminar">Eliminar
+                            </button>
                         @endif
                     </form>
                 </div>
