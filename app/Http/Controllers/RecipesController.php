@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\HistoriaMedica;
+use App\Medicina;
+use App\Recipe;
+use App\User;
 use Illuminate\Http\Request;
 
 class RecipesController extends Controller
@@ -11,9 +15,18 @@ class RecipesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        if(!Auth::user()->can('VerRecipe'))
+            abort(403);
+
+        $recipes = Recipe::where('status', '=', 'activo')->paginate();
+        return view('recipes.index', ['recipes'=>$recipes]);
     }
 
     /**

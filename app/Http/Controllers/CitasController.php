@@ -164,4 +164,21 @@ class CitasController extends Controller
         $especialidad = Especialidad::all();
         return view('citas.cambiarstatuscita', ['cita' => $cita, 'paciente' => $paciente, 'medico' => $medico, 'especialidad' => $especialidad]);
     }
+
+    public function vermiscitas()
+    {
+        if(!Auth::user()->can('VerMisCitas'))
+            abort(403);
+
+        return view('pacientes.vermiscitas');
+    }
+
+    public function vermiscitasmedico()
+    {
+        if(!Auth::user()->can('ModuloMedico'))
+            abort(403);
+
+        $citas=Cita::where('medico_id','=', Auth::user()->id )->paginate();
+        return view('medicos.vermiscitas', ['citas'=>$citas]);
+    }
 }

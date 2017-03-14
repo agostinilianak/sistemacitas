@@ -18,8 +18,8 @@ class CreateRecipeTable extends Migration
             $table->integer('historiamedica_id')->unsigned();
             $table->foreign('historiamedica_id')->references('id')->on('historiasmedicas');
             $table->enum('status', ['activo', 'entregado', 'cancelado']);
-            $table->text('observaciones', 300);
-            $table->integer('farmaceuta_id')->unsigned();
+            $table->text('observaciones', 300)->nullable;
+            $table->integer('farmaceuta_id')->unsigned()->nullable;
             $table->foreign('farmaceuta_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

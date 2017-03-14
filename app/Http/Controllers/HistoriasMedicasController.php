@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SoftDeletes;
@@ -55,7 +56,7 @@ class HistoriasMedicasController extends Controller
         try {
             \DB::beginTransaction();
 
-            HistoriaMedica::create([
+            $hmedica= HistoriaMedica::create([
                 'cita_id'=>$request->input('cita_id'),
                 'paciente_id' => $request->input('paciente_id'),
                 'especialidad_id' => $request->input('especialidad_id'),
@@ -67,9 +68,18 @@ class HistoriasMedicasController extends Controller
                 'indicacionesHM' => $request->input('indicacionesHM'),
             ]);
 
+            $recipe= Recipe::create([
+                'historiamedica_id'=>$hmedica->id,
+                'medicina_id'=> $request->input('medicinas_id'),
+                'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
+                'observaciones'=> $request->input('observaciones'),
+            ]);
+
+            $recipe->medicinas->sync($request->input('medicina_id'));
+
         } catch (\Exception $e) {
             \DB::rollback();
-            var_dump($e);
+
         } finally {
             \DB::commit();
         }
@@ -120,13 +130,5 @@ class HistoriasMedicasController extends Controller
     {
         //
     }
-    public function vermiscitasmedico()
-    {
-        if(!Auth::user()->can('ModuloMedico'))
-            abort(403);
 
-        $hmedica=HistoriaMedica::all();
-        $citas=Cita::where('medico_id','=', Auth::user()->id )->paginate();
-        return view('medicos.vermiscitas', ['hmedica'=>$hmedica, 'citas'=>$citas]);
-    }
 }
