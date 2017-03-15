@@ -39,7 +39,8 @@
                                     <td>{{ $per->name }}</td>
                                     @if(Auth::user()->can('EditarPermisos'))
                                     <td>
-                                        <a href="{{ url('permisos/'.$per->id.'/edit') }}" class="btn btn-primary">
+                                        <a href="{{ url('permisos/'.$per->id.'/edit') }}" class="btn btn-primary"
+                                           title="Editar Permiso">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
@@ -48,7 +49,8 @@
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('/permisos/'.$per->id) }}"
                                                 data-name="{{ $per->name }}"
-                                                data-toggle="modal" data-target="#confirm-delete">
+                                                data-toggle="modal" data-target="#confirm-delete"
+                                                title="Eliminar Permiso">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
                                     </td>

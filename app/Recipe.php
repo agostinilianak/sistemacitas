@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
+    protected $table= "recipes";
+
     protected $fillable = [
-        'medicina_id', 'farmaceuta_id',
+        'historiamedica_id', 'status', 'observaciones', 'medicina_id', 'farmaceuta_id',
     ];
 
     public function medicina()
     {
-        return $this->belongsToMany('App\Medicina', 'medicinas_recipe');
+        return $this->belongsToMany('App\Medicina', 'medicinas_recipes');
     }
     public function historiaMedica()
     {

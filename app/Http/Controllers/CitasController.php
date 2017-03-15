@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cita;
 use App\Especialidad;
+use App\HistoriaMedica;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,7 +75,7 @@ class CitasController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
-
+            return redirect('/citas')->with('mensaje', 'No se pudo procesar su solicitud. Verifique si el paciente ya posee una cita en la misma fecha con el Medico seleccionado');
         } finally {
             \DB::commit();
         }
@@ -116,6 +117,16 @@ class CitasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $v = Validator::make($request->all(), [
+            'medico' => 'required',
+            'fecha_cita' => 'required',
+            'hora_cita' => 'required',
+        ]);
+
+        if ($v->fails()) {
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+
         $medico = User::findOrFail($request->input('medico'));
         try {
             \DB::beginTransaction();
@@ -131,11 +142,11 @@ class CitasController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
-
+            return redirect('/citas')->with('mensaje', 'No se pudo procesar su solicitud.');
         } finally {
             \DB::commit();
         }
-        return redirect('/citas')->with('mensaje', 'Cita editada Exitosamente');
+        return redirect(Auth::user()->hasRole('Medico')?'/medicos/vermiscitas': '/citas')->with('mensaje', 'Cita editada Exitosamente');
     }
 
     /**
@@ -156,7 +167,7 @@ class CitasController extends Controller
     public function cambiarstatuscita($id)
     {
         if (!Auth::user()->can('CambiarStatusCita'))
-            abort(403);
+           abort(403);
 
         $cita = Cita::findOrFail($id);
         $paciente = User::findOrFail($cita->paciente_id);
@@ -170,15 +181,17 @@ class CitasController extends Controller
         if(!Auth::user()->can('VerMisCitas'))
             abort(403);
 
-        return view('pacientes.vermiscitas');
+        $citas=Cita::orderBy('status')->get();
+        return view('pacientes.vermiscitas', ['citas'=>$citas]);
     }
 
     public function vermiscitasmedico()
     {
-        if(!Auth::user()->can('ModuloMedico'))
+        if(!Auth::user()->can('VerMisCitas'))
             abort(403);
 
-        $citas=Cita::where('medico_id','=', Auth::user()->id )->paginate();
+        $citas=Cita::where('medico_id','=', Auth::user()->id )->where('status','=', 'solicitada')
+            ->orderBy('fecha_cita')->get();
         return view('medicos.vermiscitas', ['citas'=>$citas]);
     }
 }

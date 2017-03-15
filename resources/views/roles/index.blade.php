@@ -39,14 +39,16 @@
                                     <td>{{ $role->name }}</td>
                                     @if(Auth::user()->can('AsignarPermiso'))
                                     <td>
-                                        <a href="{{ url('roles/'.$role->id.'/permisos') }}" class="btn btn-warning">
+                                        <a href="{{ url('roles/'.$role->id.'/permisos') }}" class="btn btn-warning"
+                                           title="Asignar Permisos">
                                             <i class="fa fa-id-card"></i>
                                         </a>
                                     </td>
                                     @endif
                                     @if(Auth::user()->can('EditarRol'))
                                     <td>
-                                        <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-primary">
+                                        <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-primary"
+                                           title="Editar Rol">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
@@ -55,7 +57,8 @@
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('/roles/'.$role->id) }}"
                                                 data-name="{{ $role->name }}"
-                                                data-toggle="modal" data-target="#confirm-delete">
+                                                data-toggle="modal" data-target="#confirm-delete"
+                                                title="Eliminar Rol">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
                                     </td>

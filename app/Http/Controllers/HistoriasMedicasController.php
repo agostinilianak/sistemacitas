@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Recipe;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SoftDeletes;
 use App\User;
-use App\Especialidad;
 use App\Cita;
 use App\HistoriaMedica;
 
@@ -25,7 +24,8 @@ class HistoriasMedicasController extends Controller
 
     public function index()
     {
-
+        $hmedica = HistoriaMedica::paginate(10);
+        return view('historiasmedicas.index', ['hmedica' => $hmedica]);
     }
 
     /**
@@ -42,7 +42,9 @@ class HistoriasMedicasController extends Controller
         $user = $cita->paciente;
         $medico = $cita->medico;
         $especialidad = $cita->especialidad;
-        return view('historiasmedicas.create', ['user'=>$user, 'cita'=>$cita, 'especialidad'=>$especialidad, 'medico'=>$medico]);
+        $hmedica = HistoriaMedica::all();
+        return view('historiasmedicas.create', ['user'=>$user, 'cita'=>$cita, 'especialidad'=>$especialidad,
+                                                'medico'=>$medico, 'hmedica'=>$hmedica]);
     }
 
     /**
@@ -53,33 +55,30 @@ class HistoriasMedicasController extends Controller
      */
     public function store(Request $request)
     {
+        $v=Validator::make($request->all(),[
+            'cita_id' => 'required',
+            'motivoconsulta' => 'required',
+            'examenfisico' => 'required',
+            'indicacionesHM' => 'required',
+        ]);
+        if ($v->fails()) {
+            return redirect()->back()->withErrors($v)->withInput();
+        }
         try {
             \DB::beginTransaction();
-
             $hmedica= HistoriaMedica::create([
                 'cita_id'=>$request->input('cita_id'),
                 'paciente_id' => $request->input('paciente_id'),
                 'especialidad_id' => $request->input('especialidad_id'),
                 'medico_id' => $request->input('medico_id'),
                 'motivoconsulta' => $request->input('motivoconsulta'),
-                'a_familiares' => $request->input('a_familiares'),
-                'a_personales' => $request->input('a_personales'),
                 'examenfisico' => $request->input('examenfisico'),
                 'indicacionesHM' => $request->input('indicacionesHM'),
             ]);
 
-            $recipe= Recipe::create([
-                'historiamedica_id'=>$hmedica->id,
-                'medicina_id'=> $request->input('medicinas_id'),
-                'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
-                'observaciones'=> $request->input('observaciones'),
-            ]);
-
-            $recipe->medicinas->sync($request->input('medicina_id'));
-
         } catch (\Exception $e) {
             \DB::rollback();
-
+            return redirect('/medicos/vermiscitas')->with('mensaje', 'No se pudo procesar su solicitud.');
         } finally {
             \DB::commit();
         }
@@ -105,7 +104,9 @@ class HistoriasMedicasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cita = Cita::findOrFail($id);
+        $hmedica = HistoriaMedica::findOrFail($id);
+        return view('historiasmedicas.edit', ['cita' => $cita, 'hmedica' => $hmedica]);
     }
 
     /**
@@ -117,9 +118,35 @@ class HistoriasMedicasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'cita_id' => 'required',
+            'motivoconsulta' => 'required',
+            'examenfisico' => 'required',
+            'indicacionesHM' => 'required',
+        ]);
+        if ($v->fails()) {
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+        try {
+            \DB::beginTransaction();
+            $hmedica = HistoriaMedica::findOrFail($id);
+            $hmedica->update([
+                'cita_id'=>$request->input('cita_id'),
+                'paciente_id' => $request->input('paciente_id'),
+                'especialidad_id' => $request->input('especialidad_id'),
+                'medico_id' => $request->input('medico_id'),
+                'motivoconsulta' => $request->input('motivoconsulta'),
+                'examenfisico' => $request->input('examenfisico'),
+                'indicacionesHM' => $request->input('indicacionesHM'),
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return redirect('/historiasmedicas')->with('mensaje', 'No se pudo procesar su solicitud.');
+        } finally {
+            \DB::commit();
+        }
+        return redirect('/historiasmedicas')->with('mensaje', 'Historia Medica editada Exitosamente');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -128,7 +155,11 @@ class HistoriasMedicasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!Auth::user()->can('EliminarHistoriaMedica'))
+            abort(403, 'Permiso Denegado.');
+
+        User::destroy($id);
+        return redirect('/historiasmedicas')->with('mensaje', 'Historia Medica eliminada satisfactoriamente');
     }
 
 }

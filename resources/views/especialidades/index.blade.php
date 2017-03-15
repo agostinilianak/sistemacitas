@@ -40,7 +40,7 @@
                                     @if(Auth::user()->can('EditarEspecialidad'))
                                     <td>
                                         <a href="{{ url('especialidades/'.$especialidad->id.'/edit') }}" class="btn btn-primary">
-                                            <i class="fa fa-edit"></i>
+                                            <i class="fa fa-edit" title="Editar Especialidad"></i>
                                         </a>
                                     </td>
                                     @endif
@@ -48,7 +48,8 @@
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('$/especialidades/'.$especialidad->id) }}"
                                                 data-name="{{ $especialidad->nombre}}"
-                                                data-toggle="modal" data-target="#confirm-delete">
+                                                data-toggle="modal" data-target="#confirm-delete"
+                                                title="Editar Especialidad">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
                                     </td>

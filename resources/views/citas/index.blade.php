@@ -38,7 +38,7 @@
                                     @if(Auth::user()->can('EditarCita'))
                                     <td>
                                             <a href="{{ url('citas/'.$cita->id.'/edit') }}"
-                                               class="btn btn-primary">
+                                               class="btn btn-primary" title="Editar Cita">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                     </td>
@@ -46,7 +46,7 @@
                                     @if(Auth::user()->can('CambiarStatusCita'))
                                         <td>
                                             <a href="{{ url('citas/'.$cita->id.'/cambiarstatuscita') }}"
-                                               class="btn btn-primary">
+                                               class="btn btn-primary" title="Cambia Status Cita">
                                                 <i class="fa fa-id-card"></i>
                                             </a>
                                         </td>
@@ -55,7 +55,8 @@
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('/citas/'.$cita->id) }}"
                                                 data-name="{{ $cita->paciente->nombre . " " . $cita->fecha_cita  }}"
-                                                data-toggle="modal" data-target="#confirm-delete">
+                                                data-toggle="modal" data-target="#confirm-delete"
+                                                title="Eiminar Cita">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
                                     </td>

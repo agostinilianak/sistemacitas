@@ -15,6 +15,6 @@ class Medicina extends Model
 
     public function recipe()
     {
-        return $this->belongsToMany('App\Recipe', 'medicinas_recipe');
+        return $this->belongsToMany('App\Recipe', 'medicinas_recipes');
     }
 }

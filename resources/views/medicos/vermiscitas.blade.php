@@ -16,82 +16,55 @@
                                         <th>Hora</th>
                                         <th width="10%" colspan="4">Acciones</th>
                                     </tr>
-                                    @foreach(Auth::user()->cita as $cita)
+                                    @foreach($citas as $cita)
                                         <tr>
                                             <td>{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ".$cita->paciente->cedula }}</td>
                                             <td>{{ $cita->fecha_cita }}</td>
                                             <td>{{ $cita->hora_cita }}</td>
+                                            <td>
                                             @if(Auth::user()->can('CrearHistoriaMedica'))
-                                            <td>
-                                                <a href="{{ url('historiasmedicas/create/'.$cita->id) }}"
-                                                   class="btn btn-success">
-                                                    <i class="fa fa-database" aria-hidden="true"></i>
-                                                </a>
+                                                    <a href="{{ url('historiasmedicas/create/'.$cita->id) }}"
+                                                       class="btn btn-success" title="Crear Historia Medica">
+                                                        <i class="fa fa-database" aria-hidden="true"></i>
+                                                    </a>
+                                            @endif
                                             </td>
-                                        @endif
-                                        @if(Auth::user()->can('ActualizarHistoriaMedica'))
                                             <td>
-                                                <a href="{{ url('historiasmedicas/'.$cita->id.'/actualizar') }}"
-                                                   class="btn btn-primary">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
+                                                @if(Auth::user()->can('EditarHistoriaMedica') && $cita->historiaMedica)
+                                                    <a href="{{ url('historiasmedicas/'.$cita->historiaMedica->id.'/edit') }}"
+                                                       class="btn btn-primary" title="Editar Historia Medica">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                @else
+                                                    <button class="btn btn-primary" disabled>
+                                                        <i class="fa fa-edit" title="Editar Historia Medica"></i>
+                                                    </button>
+                                                @endif
                                             </td>
-                                        @endif
-                                        @if(Auth::user()->can('CambiarStatusCita'))
                                             <td>
-                                                <a href="{{ url('citas/'.$cita->id.'/cambiarstatuscita') }}"
-                                                   class="btn btn-primary">
-                                                    <i class="fa fa-id-card"></i>
-                                                </a>
+                                                @if(Auth::user()->can('CrearRecipe') && $cita->historiaMedica)
+                                                    <a href="{{ url('recipes/create') }}"
+                                                       class="btn btn-primary" title="Crear Recipe">
+                                                        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                                                    </a>
+                                                    @else
+                                                        <button class="btn btn-primary" disabled>
+                                                            <i class="fa fa-plus-square-o" aria-hidden="true" title="Crear Recipe"></i>
+                                                        </button>
+                                                @endif
                                             </td>
-                                        @endif
-                                        <td>
-                                            <button class="btn btn-danger"
-                                                    data-action="{{ url('/historiasmedicas/'.$cita->id) }}"
-                                                    data-name="{{ $cita->paciente->nombre . " " . $cita->paciente->apellido }}"
-                                                    data-toggle="modal" data-target="#confirm-delete">
-                                                <i class="fa fa-trash fa-1x"></i>
-                                            </button>
-                                        </td>
+                                            @if(Auth::user()->can('CambiarStatusCita'))
+                                                <td>
+                                                    <a href="{{ url('citas/'.$cita->id.'/cambiarstatuscita') }}"
+                                                       class="btn btn-danger" title="Cambiar Status Cita">
+                                                        <i class="fa fa-id-card"></i>
+                                                    </a>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="confirm-delete" tabindex="-1"
-                 role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Seguro que desea eliminar este
-                                registro?</p>
-                            <p class="nombre"></p>
-                        </div>
-                        <div class="modal-footer">
-                            <form class="form-inline form-delete"
-                                  role="form"
-                                  method="POST"
-                                  action="">
-                                {!! method_field('DELETE') !!}
-                                {!! csrf_field() !!}
-                                <button type="button"
-                                        class="btn btn-default"
-                                        data-dismiss="modal">Cancelar
-                                </button>
-                                @if(Auth::user()->can('EliminarHistoriaMedica'))
-                                    <button id="delete-btn"
-                                            class="btn btn-danger"
-                                            title="Eliminar">Eliminar
-                                    </button>
-                                @endif
-                            </form>
                         </div>
                     </div>
                 </div>

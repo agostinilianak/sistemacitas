@@ -14,14 +14,20 @@
 
                             <div class="form-group{{ $errors->has('paciente') ? ' has-error' : '' }}">
                                 <label for="paciente" class="col-md-4 control-label">Paciente</label>
-
                                 <div class="col-md-6">
                                     <input id="paciente" type="text" class="form-control" name="paciente"
-                                           value="{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ". $cita->paciente->cedula }}" autofocus readonly>
+                                           value="{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ". $cita->paciente->cedula }}"
+                                           autofocus readonly>
+                                    <input id="paciente" type="text" class="form-control" name="paciente"
+                                           value="{{ $cita->medico->nombre." ".$cita->medico->apellido." (".$cita->especialidad->nombre.")"}}"
+                                           autofocus readonly>
                                     <input type="hidden" id="cita_id" name="cita_id" value="{{ $cita->id }}">
-                                    <input type="hidden" id="paciente_id" name="paciente_id" value="{{ $cita->paciente->id }}">
-                                    <input type="hidden" id="medico_id" name="medico_id" value="{{ $cita->medico->id }}">
-                                    <input type="hidden" id="especialidad_id" name="especialidad_id" value="{{ $cita->especialidad->id }}">
+                                    <input type="hidden" id="paciente_id" name="paciente_id"
+                                           value="{{ $cita->paciente->id }}">
+                                    <input type="hidden" id="medico_id" name="medico_id"
+                                           value="{{ $cita->medico->id }}">
+                                    <input type="hidden" id="especialidad_id" name="especialidad_id"
+                                           value="{{ $cita->especialidad->id }}">
                                     @if($errors->has('paciente'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('paciente') }}</strong>
@@ -29,11 +35,12 @@
                                     @endif
                                 </div>
                             </div>
+
                             <div class="form-group{{ $errors->has('motivoconsulta') ? ' has-error' : '' }}">
                                 <label for="motivoconsulta" class="col-md-4 control-label">Motivo de la Consulta</label>
-
                                 <div class="col-md-6">
-                                    <textarea name="motivoconsulta" id="motivoconsulta" cols="50" rows="10">{{ old('motivoconsulta') }}</textarea>
+                                    <textarea name="motivoconsulta" id="motivoconsulta" cols="50"
+                                              rows="2">{{ old('motivoconsulta') }}</textarea>
                                     @if($errors->has('motivoconsulta'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('motivoconsulta') }}</strong>
@@ -41,36 +48,12 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('a_familiares') ? ' has-error' : '' }}">
-                                <label for="a_familiares" class="col-md-4 control-label">Antecedentes Familiares</label>
 
-                                <div class="col-md-6">
-                                    <textarea name="a_familiares" id="a_familiares" cols="50" rows="10">{{ old('a_familiares') }}</textarea>
-                                    @if($errors->has('a_familiares'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('a_familiares') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('a_personales') ? ' has-error' : '' }}">
-                                <label for="a_personales" class="col-md-4 control-label">Antecedentes Personales</label>
-
-                                <div class="col-md-6">
-                                    <textarea name="a_personales" id="a_personales" cols="50" rows="10">{{ old('a_personales') }}</textarea>
-                                    @if($errors->has('a_personales'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('a_personales') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
                             <div class="form-group{{ $errors->has('examenfisico') ? ' has-error' : '' }}">
                                 <label for="examenfisico" class="col-md-4 control-label">Examen Fisico</label>
-
                                 <div class="col-md-6">
-                                    <textarea name="examenfisico" id="examenfisico" cols="50" rows="10">{{ old('examenfisico') }}</textarea>
+                                    <textarea name="examenfisico" id="examenfisico" cols="50"
+                                              rows="5">{{ old('examenfisico') }}</textarea>
                                     @if($errors->has('examenfisico'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('examenfisico') }}</strong>
@@ -78,11 +61,13 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('indicacionesHM') ? ' has-error' : '' }}">
-                                <label for="indicacionesHM" class="col-md-4 control-label">Indicaciones Historia Medica</label>
 
+                            <div class="form-group{{ $errors->has('indicacionesHM') ? ' has-error' : '' }}">
+                                <label for="indicacionesHM" class="col-md-4 control-label">Indicaciones Historia
+                                    Medica</label>
                                 <div class="col-md-6">
-                                    <textarea name="indicacionesHM" id="indicacionesHM" cols="50" rows="10">{{ old('indicacionesHM') }}</textarea>
+                                    <textarea name="indicacionesHM" id="indicacionesHM" cols="50"
+                                              rows="5">{{ old('indicacionesHM') }}</textarea>
                                     @if($errors->has('indicacionesHM'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('indicacionesHM') }}</strong>
@@ -90,15 +75,41 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @if(Auth::user()->can('CrearRecipe'))
+                                <div class="form-group{{ $errors->has('medicina_id') ? ' has-error' : '' }}">
+                                    <label for="medicina_id" class="col-md-4 control-label">Medicinas</label>
+                                    <div class="col-md-6">
+                                        <select name="medicina_id[]" id="medicina_id[]" class="selectpicker" multiple data-max-options="3">
+                                            <option value="">Seleccione</option>
+                                            @foreach($medicinas as $medicina)
+                                                <option value="{{ $medicina->id }}">{{ $medicina->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @if($errors->has('medicina_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('medicina_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group{{ $errors->has('observaciones') ? ' has-error' : '' }}">
+                                    <label for="observaciones" class="col-md-4 control-label">Observaciones</label>
+                                    <div class="col-md-6">
+                                        <textarea name="observaciones" id="observaciones" cols="50"
+                                                  rows="5">{{ old('observaciones') }}</textarea>
+                                        @if($errors->has('observaciones'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('observaciones') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    @if(Auth::user()->can('CrearRecipe'))
-                                        <td>
-                                            <a href="{{ url('recipes/create') }}" class="btn btn-success">
-                                                <i class="fa fa-plus-circle" aria-hidden="true"></i> Crear Recipe
-                                            </a>
-                                        </td>
-                                    @endif
                                     <button type="submit" class="btn btn-primary">
                                         Guardar
                                     </button>

@@ -57,7 +57,7 @@
                                         @if(Auth::user()->can('PermisosUsuario'))
                                             <td>
                                                 <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                                   class="btn btn-warning">
+                                                   class="btn btn-warning" title="Asignar Permisos">
                                                     <i class="fa fa-id-card"></i>
                                                 </a>
                                             </td>
@@ -65,7 +65,7 @@
                                         @if(Auth::user()->can('SolicitarCita'))
                                             <td>
                                                 <a href="{{ url('citas/'.$user->id.'/solicitarcita') }}"
-                                                   class="btn btn-success">
+                                                   class="btn btn-success" title="Solicitar Cita">
                                                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                                                 </a>
                                             </td>
@@ -73,7 +73,7 @@
                                         @if(Auth::user()->can('EditarUsuario'))
                                             <td>
                                                 <a href="{{ url('usuarios/'.$user->id.'/edit') }}"
-                                                   class="btn btn-primary">
+                                                   class="btn btn-primary" title="Editar Paciente">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                             </td>
@@ -82,7 +82,8 @@
                                             <button class="btn btn-danger"
                                                     data-action="{{ url('/usuarios/'.$user->id) }}"
                                                     data-name="{{ $user->nombre . " " . $user->apellido }}"
-                                                    data-toggle="modal" data-target="#confirm-delete">
+                                                    data-toggle="modal" data-target="#confirm-delete"
+                                                    title="Eliminar Paciente">
                                                 <i class="fa fa-trash fa-1x"></i>
                                             </button>
                                         </td>

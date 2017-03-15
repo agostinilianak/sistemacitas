@@ -42,7 +42,8 @@
                                             <button class="btn btn-danger"
                                                     data-action="{{ url('/medicinas/'.$medicina->id) }}"
                                                     data-name="{{ $medicina->nombre }}"
-                                                    data-toggle="modal" data-target="#confirm-delete" title="Eliminar Medicina">
+                                                    data-toggle="modal" data-target="#confirm-delete"
+                                                    title="Eliminar Medicina">
                                                 <i class="fa fa-trash fa-1x"></i>
                                             </button>
                                         </td>

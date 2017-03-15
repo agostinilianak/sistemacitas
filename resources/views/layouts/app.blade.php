@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-select.css">
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -115,6 +116,7 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
+<script src="/js/bootstrap-select.js"></script>
 <script type="application/javascript">
     $('#confirm-delete').on('show.bs.modal', function (e) {
         $(this).find('.form-delete').attr('action', $(e.relatedTarget).data('action'));

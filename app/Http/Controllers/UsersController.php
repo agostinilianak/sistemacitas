@@ -106,7 +106,16 @@ class UsersController extends Controller
         } finally {
             \DB::commit();
         }
-            return redirect('/home')->with('mensaje', 'Proceso satisfactorio');
+
+        if(Auth::user()->hasRole('Secretaria'))
+        {
+            return redirect('/pacientes')->with('mensaje', 'Paciente creado satisfactoriamente');
+        }
+        elseif(Auth::user()->hasRole('Administrador'))
+        {
+            return redirect('/usuarios')->with('mensaje', 'Usuario creado satisfactoriamente');
+        }
+
     }
 
     /**
@@ -128,8 +137,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //if(!Auth::user()->can('EditarUsuario'))
-        //    abort(403,'Acceso Prohibido');
+        if(!Auth::user()->can('EditarUsuario'))
+            abort(403,'Acceso Prohibido');
 
         $roles = Role::all();
         $especialidades = Especialidad::all();
@@ -158,7 +167,6 @@ class UsersController extends Controller
             'email' => 'required|email|max:255|unique:users,email,' . $id . ',id',
             'role' => 'required',
             'especialidad'=> 'required_if:role,Medico',
-
         ]);
 
         if ($v->fails()) {
@@ -201,7 +209,29 @@ class UsersController extends Controller
         } finally {
             \DB::commit();
         }
-            return redirect('/home')->with('mensaje', 'Actualización satisfactoria');
+        if(Auth::user()->hasRole('Secretaria'))
+        {
+            return redirect('/pacientes')->with('mensaje', 'Paciente editado satisfactoriamente');
+        }
+        elseif(Auth::user()->hasRole('Administrador'))
+        {
+            return redirect('/usuarios')->with('mensaje', 'Usuario editado satisfactoriamente');
+        }
+        elseif(Auth::user()->hasRole('Medico'))
+        {
+            return redirect('/home')->with('mensaje', 'Medico editado satisfactoriamente');
+        }
+        elseif(Auth::user()->hasRole('Farmaceuta'))
+        {
+            return redirect('/home')->with('mensaje', 'Usuario editado satisfactoriamente');
+        }
+        elseif(Auth::user()->hasRole('Secretaria'))
+        {
+            return redirect('/home')->with('mensaje', 'Usuario editado satisfactoriamente');
+        }
+
+
+
     }
 
 
@@ -305,6 +335,5 @@ class UsersController extends Controller
         $especialidades = Especialidad::all();
         return view('citas.edit', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
-
 }
 
