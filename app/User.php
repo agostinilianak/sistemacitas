@@ -56,4 +56,8 @@ class User extends Authenticatable
     {
         return $query->orWhere('cedula', 'like', '%'.$cedula.'%');
     }
+    public function scopeCedulaPaciente($query, $cedula)
+    {
+        return $query->where('cedula', '=', $cedula);
+    }
 }

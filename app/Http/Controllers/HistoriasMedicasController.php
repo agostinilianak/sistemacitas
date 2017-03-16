@@ -24,10 +24,19 @@ class HistoriasMedicasController extends Controller
         $this->middleware('auth');
     }
 
-    public function index($id=null)
+    public function index()
     {
-        $hmedicas = HistoriaMedica::paginate();
-        return view('historiasmedicas.index', ['hmedicas' =>$hmedicas]);
+        $user = null;
+        $hmedicas = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='') {
+            $user = User::cedulaPaciente($buscar)->get();
+            $hmedicas = HistoriaMedica::where('paciente_id', '=', $user[0]->id)->paginate();
+
+        }else {
+            $hmedicas = HistoriaMedica::paginate();
+        }
+        return view('historiasmedicas.index', ['hmedicas' =>$hmedicas, 'buscar'=>$buscar]);
     }
 
     /**

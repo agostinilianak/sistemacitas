@@ -97,8 +97,8 @@ class RecipesController extends Controller
      */
     public function edit($id)
     {
-//        if (!Auth::user()->can('EditarRecipe'))
-  //          abort(403, 'Acceso Prohibido');
+        if (!Auth::user()->can('EditarRecipe'))
+          abort(403, 'Acceso Prohibido');
 
         $medicinas = Medicina::findOrFail($id);
         $recipe = Recipe::findOrFail($id);
@@ -171,6 +171,7 @@ class RecipesController extends Controller
     {
         if (!Auth::user()->can('CambiarStatusRecipe'))
             abort(403);
+
         $medicinas = Medicina::all();
         $recipe = Recipe::findOrFail($id);
         return view('recipes.cambiarstatusrecipe', ['recipe' => $recipe, 'medicinas'=>$medicinas]);

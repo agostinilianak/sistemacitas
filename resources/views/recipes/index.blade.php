@@ -32,7 +32,7 @@
                                     <td>{{ $recipe->historiaMedica->cita->medico->nombre." ".$recipe->historiaMedica->cita->medico->apellido }}</td>
                                     <td>{{ $recipe->historiaMedica->cita->medico->especialidad->nombre }}</td>
                                     <td>{{ $recipe->observaciones }}</td>
-                                    <td>{{ $recipe->status }}</td>
+                                    <td>{{ ucfirst($recipe->status) }}</td>
                                     <td>
                                         @if(Auth::user()->can('VerRecipe'))
                                             <a href="{{ url('recipes/'.$recipe->id.'/verrecipes') }}"
@@ -45,14 +45,14 @@
                                             </button>
                                         @endif
                                     </td>
-                                    {{--@if(Auth::user()->can('EditarRecipe'))--}}
+                                    @if(Auth::user()->can('EditarRecipe'))
                                         <td>
                                             <a href="{{ url('recipes/'.$recipe->id.'/edit') }}" class="btn btn-primary"
                                                title="Editar Recipe">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
-                                    {{--@endif--}}
+                                    @endif
                                     @if(Auth::user()->can('CambiarStatusRecipe'))
                                         <td>
                                             <a href="{{ url('recipes/'.$recipe->id.'/cambiarstatusrecipe') }}"
@@ -74,7 +74,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="8" class="text-center">
-                                    {{---{{ $recipes->links() }}--}}
+                                    {{ $recipes->links() }}
                                 </td>
                             </tr>
                         </table>

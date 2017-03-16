@@ -72,7 +72,6 @@ class RolesController extends Controller
         }finally{
             \DB::commit();
         }
-
         return redirect('/roles')->with('mensaje', 'Rol ha sido creado con exito');
     }
 
@@ -96,7 +95,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        if(!Auth::user()->can('EditarRole'))
+        if(!Auth::user()->can('EditarRol'))
             abort(403);
 
         $role = Role::findOrFail($id);
@@ -146,6 +145,9 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::user()->can('EliminarRol'))
+            abort(403, 'Permiso Denegado.');
+
         try{
             \DB::beginTransaction();
             Role::destroy($id);
@@ -158,6 +160,7 @@ class RolesController extends Controller
     }
 
     public function permisos($id){
+
         if(!Auth::user()->can('AsignarPermiso'))
             abort(403);
 
@@ -167,6 +170,7 @@ class RolesController extends Controller
     }
 
     public function asignarPermisos(Request $request, $id){
+
         $role = Role::findOrFail($id);
         $role->revokePermissionTo(Permission::all());
         if($request->input('permisos'))

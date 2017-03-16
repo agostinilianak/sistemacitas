@@ -217,21 +217,6 @@ class UsersController extends Controller
         {
             return redirect('/usuarios')->with('mensaje', 'Usuario editado satisfactoriamente');
         }
-        elseif(Auth::user()->hasRole('Medico'))
-        {
-            return redirect('/home')->with('mensaje', 'Medico editado satisfactoriamente');
-        }
-        elseif(Auth::user()->hasRole('Farmaceuta'))
-        {
-            return redirect('/home')->with('mensaje', 'Usuario editado satisfactoriamente');
-        }
-        elseif(Auth::user()->hasRole('Secretaria'))
-        {
-            return redirect('/home')->with('mensaje', 'Usuario editado satisfactoriamente');
-        }
-
-
-
     }
 
 
@@ -300,23 +285,6 @@ class UsersController extends Controller
 
         return view('medicos.index', ['users' => $medicos, 'buscar'=>$buscar]);
     }
-    public function farmaceutas()
-    {
-        $farmaceutas= User::role('Farmaceuta')->paginate();
-        return view('users.index', ['users' => $farmaceutas]);
-    }
-
-    public function secretarias()
-    {
-        $secretarias= User::role('Secretaria')->paginate();
-        return view('users.index', ['users' => $secretarias]);
-    }
-
-    public function administradores()
-    {
-        $administradores= User::role('Administrador')->paginate();
-        return view('users.index', ['users' => $administradores]);
-    }
     public function solicitarcita($id)
     {
         if(!Auth::user()->can('SolicitarCita'))
@@ -336,4 +304,3 @@ class UsersController extends Controller
         return view('citas.edit', ['citas'=>$citas, 'paciente'=> $paciente, 'medicos' => $medicos, 'especialidades' =>$especialidades]);
     }
 }
-

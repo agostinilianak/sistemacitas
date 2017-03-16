@@ -36,6 +36,9 @@ class CitasController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can('SolicitarCita'))
+            abort(403, 'Permiso Denegado.');
+
         $paciente = User::role('Paciente')->get();
         $medico = User::role('Medico')->get();
         $especialidad = Especialidad::all();
@@ -101,6 +104,9 @@ class CitasController extends Controller
      */
     public function edit($id)
     {
+        if (!Auth::user()->can('EditarCita'))
+            abort(403, 'Permiso Denegado.');
+
         $cita = Cita::findOrFail($id);
         $paciente = User::findOrFail($cita->paciente_id);
         $medicos = User::role('Medico')->get();
@@ -157,7 +163,7 @@ class CitasController extends Controller
      */
     public function destroy($id)
     {
-        if (!Auth::user()->can('EliminarUsuario'))
+        if (!Auth::user()->can('EliminarCita'))
             abort(403, 'Permiso Denegado.');
 
         User::destroy($id);

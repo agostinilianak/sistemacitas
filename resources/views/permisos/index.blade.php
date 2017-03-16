@@ -37,7 +37,7 @@
                             @foreach($permissions as $per)
                                 <tr>
                                     <td>{{ $per->name }}</td>
-                                    @if(Auth::user()->can('EditarPermisos'))
+                                    @if(Auth::user()->can('EditarPermiso'))
                                     <td>
                                         <a href="{{ url('permisos/'.$per->id.'/edit') }}" class="btn btn-primary"
                                            title="Editar Permiso">

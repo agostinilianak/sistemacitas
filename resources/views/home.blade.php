@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @if(Session::has('mensaje'))
     <div class="row">
         <div class="col-md-12">
             <div class="alert alert-info alert-dismissible" role="alert">
@@ -11,6 +12,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
