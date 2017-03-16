@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\HistoriaMedica;
 use App\Medicina;
-use App\Recipe;
 use App\User;
+use App\Especialidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Recipe;
+use App\Cita;
 
 
 class RecipesController extends Controller
@@ -24,26 +26,16 @@ class RecipesController extends Controller
 
     public function index()
     {
-        if(!Auth::user()->can('VerRecipe'))
-            abort(403);
-
-        $recipes = Recipe::where('status', '=', 'activo')->paginate();
-        return view('recipes.index', ['recipes'=>$recipes]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id=null)
-    {
-        if (!Auth::user()->can('CrearRecipe'))
-            abort(403, 'Acceso Prohibido');
-
-        $medicinas = Medicina::all();
-        $hmedica = HistoriaMedica::findOrFail($id);
-        return view('recipes.create', ['medicinas'=>$medicinas, 'hmedica'=>$hmedica]);
+        $recipes = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $recipes=Recipe::nombre($buscar)
+                ->apellido($buscar)
+                ->cedula($buscar)
+                ->paginate();
+        else
+            $recipes=Recipe::paginate(10);
+        return view('recipes.index', ['recipes' =>$recipes, 'buscar'=>$buscar]);
     }
 
     /**
@@ -52,6 +44,23 @@ class RecipesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function create($id)
+    {
+        if (!Auth::user()->can('CrearRecipe'))
+            abort(403, 'Acceso Prohibido');
+
+        $hmedica = HistoriaMedica::findOrFail($id);
+        $cita = Cita::findOrFail($id);
+        $user = $cita->paciente;
+        $medico = $cita->medico;
+        $especialidad = $cita->especialidad;
+        $medicina = Medicina::all();
+        $recipe = Recipe::all();
+        return view('recipes.create', ['hmedica'=>$hmedica, 'medicina'=>$medicina, 'recipe'=>$recipe, 'user'=>$user,
+            'cita'=>$cita, 'especialidad'=>$especialidad, 'medico'=>$medico]);
+    }
+
     public function store(Request $request)
     {
         $v=Validator::make($request->all(),[
@@ -83,6 +92,12 @@ class RecipesController extends Controller
         }
         return redirect('/medicos/vermiscitas')->with('mensaje', 'Recipe creado Exitosamente');
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     /**
      * Display the specified resource.

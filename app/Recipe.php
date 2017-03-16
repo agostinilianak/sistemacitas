@@ -24,8 +24,4 @@ class Recipe extends Model
     {
         return $this->belongsTo('App\User', 'farmaceuta_id');
     }
-    public function scopeHistoriaMedica($query)
-    {
-        return $query->where('historia_medica_id', '=', $historia->id);
-    }
 }

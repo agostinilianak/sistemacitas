@@ -35,6 +35,7 @@ Route::get('/home', 'HomeController@index');
     Route::put('/usuarios/{id}/asignarpermisos','UsersController@asignarPermisos');
     Route::get('/citas/{id}/solicitarcita','UsersController@solicitarcita');
     Route::get('/medicos/vermiscitas', 'HistoriasMedicasController@vermiscitasmedico');
+    Route::get('historiasmedicas/{id}/verhistoriamedica', 'HistoriasMedicasController@verhistoriamedica');
     Route::get('/citas/{id}/cambiarstatuscita', 'CitasController@cambiarstatuscita');
     Route::get('/medicos/vermiscitas', 'CitasController@vermiscitasmedico');
     Route::get('/historiasmedicas/create/{id?}', 'HistoriasMedicasController@create');

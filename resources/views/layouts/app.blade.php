@@ -132,6 +132,11 @@
         }
     }).trigger('change');
 </script>
+<script>
+    $('.back-button').click(function(e){
+            history.back();
+        });
+</script>
 
 </body>
 </html>

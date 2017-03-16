@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Dotenv\Validator;
+Use Validator;
+use App\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SoftDeletes;
 use App\User;
-use App\Cita;
 use App\HistoriaMedica;
 
 class HistoriasMedicasController extends Controller
@@ -22,10 +22,18 @@ class HistoriasMedicasController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index($id=null)
     {
-        $hmedica = HistoriaMedica::paginate(10);
-        return view('historiasmedicas.index', ['hmedica' => $hmedica]);
+        $hmedicas = null;
+        $buscar = \Request::get('buscar');
+        if($buscar!='')
+            $hmedicas= HistoriaMedica::nombre($buscar)
+                ->apellido($buscar)
+                ->cedula($buscar)
+                ->paginate();
+        else
+            $hmedicas = HistoriaMedica::paginate(10);
+        return view('historiasmedicas.index', ['hmedicas' =>$hmedicas, 'buscar'=>$buscar]);
     }
 
     /**
@@ -78,7 +86,7 @@ class HistoriasMedicasController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
-            return redirect('/medicos/vermiscitas')->with('mensaje', 'No se pudo procesar su solicitud.');
+            return redirect('/medicos/vermiscitas')->with('mensaje', 'No se pudo procesar su solicitud. Este paciente ya tiene una Historia Medica creada para esta cita');
         } finally {
             \DB::commit();
         }
@@ -104,9 +112,8 @@ class HistoriasMedicasController extends Controller
      */
     public function edit($id)
     {
-        $cita = Cita::findOrFail($id);
         $hmedica = HistoriaMedica::findOrFail($id);
-        return view('historiasmedicas.edit', ['cita' => $cita, 'hmedica' => $hmedica]);
+        return view('historiasmedicas.edit', ['hmedica' => $hmedica]);
     }
 
     /**
@@ -158,8 +165,12 @@ class HistoriasMedicasController extends Controller
         if (!Auth::user()->can('EliminarHistoriaMedica'))
             abort(403, 'Permiso Denegado.');
 
-        User::destroy($id);
+        HistoriaMedica::destroy($id);
         return redirect('/historiasmedicas')->with('mensaje', 'Historia Medica eliminada satisfactoriamente');
     }
-
+    public function verhistoriamedica($id)
+    {
+        $hmedica = HistoriaMedica::findOrFail($id);
+        return view('historiasmedicas.verhistoriamedica', ['hmedica' => $hmedica]);
+    }
 }

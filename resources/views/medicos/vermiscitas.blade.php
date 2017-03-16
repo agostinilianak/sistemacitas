@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="container">
+        @if(session('mensaje'))
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        <strong>Info:</strong> {{ session('mensaje') }}.
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
@@ -18,7 +30,7 @@
                                     </tr>
                                     @foreach($citas as $cita)
                                         <tr>
-                                            <td>{{ $cita->paciente->nombre." ".$cita->paciente->apellido." ".$cita->paciente->cedula }}</td>
+                                            <td>{{ $cita->paciente->nombre." ".$cita->paciente->apellido." C.I.:".$cita->paciente->cedula }}</td>
                                             <td>{{ $cita->fecha_cita }}</td>
                                             <td>{{ $cita->hora_cita }}</td>
                                             <td>
@@ -30,19 +42,7 @@
                                             @endif
                                             </td>
                                             <td>
-                                                @if(Auth::user()->can('EditarHistoriaMedica') && $cita->historiaMedica)
-                                                    <a href="{{ url('historiasmedicas/'.$cita->historiaMedica->id.'/edit') }}"
-                                                       class="btn btn-primary" title="Editar Historia Medica">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @else
-                                                    <button class="btn btn-primary" disabled>
-                                                        <i class="fa fa-edit" title="Editar Historia Medica"></i>
-                                                    </button>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if(Auth::user()->can('CrearRecipe') && $cita->historiaMedica)
+                                                @if(Auth::user()->can('CrearRecipe'))
                                                     <a href="{{ url('recipes/create') }}"
                                                        class="btn btn-primary" title="Crear Recipe">
                                                         <i class="fa fa-plus-square-o" aria-hidden="true"></i>

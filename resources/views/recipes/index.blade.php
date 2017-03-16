@@ -6,8 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="alert alert-info alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>Info:</strong> {{ session('mensaje') }}.
                     </div>
                 </div>
@@ -16,72 +15,49 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Listado de Usuarios</div>
+                    <div class="panel-heading">Listado de Recipes</div>
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                @if(Auth::user()->can('RegistrarUsuario'))
-                                    <a href="{{ url('/usuarios/create') }}" class="btn btn-success">
-                                        <i class="fa fa-user"></i> Nuevo Usuario
-                                    </a>
-                                @endif
-                            </div>
-                            <div class="col-lg-6">
-                                <form action="{{ url('/usuarios') }}" method="get">
-                                    <div class="input-group">
-                                        <input type="text" name="buscar" id="buscar" class="form-control"
-                                               placeholder="Buscar por nombre, apellido o cedula" value="{{ $buscar }}">
-                                        <span class="input-group-btn">
-                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Telefono</th>
-                                <th>Celular</th>
+                                <th>Paciente</th>
+                                <th>Medico</th>
+                                <th>Especialidad</th>
+                                <th>Medicinas</th>
                                 <th width="10%" colspan="3">Acciones</th>
                             </tr>
-                            @foreach($users as $user)
+                            @foreach($recipes as $recipe)
                                 <tr>
-                                    <td>{{ $user->nombre }}</td>
-                                    <td>{{ $user->apellido }}</td>
-                                    <td>{{ $user->telefono }}</td>
-                                    <td>{{ $user->celular }}</td>
-                                    @if(Auth::user()->can('PermisosUsuario'))
-                                    <td>
-                                            <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                               class="btn btn-warning" title="Asignar Permisos">
+                                    <td>{{ $recipe->historiamedica->cita->paciente->nombre }}</td>
+                                    {{--}}@if(Auth::user()->can('AsignarPermiso'))
+                                        <td>
+                                            <a href="{{ url('roles/'.$role->id.'/permisos') }}" class="btn btn-warning"
+                                               title="Asignar Permisos">
                                                 <i class="fa fa-id-card"></i>
                                             </a>
-                                    </td>
+                                        </td>
                                     @endif
-                                    @if(Auth::user()->can('EditarUsuario'))
-                                    <td>
-                                            <a href="{{ url('usuarios/'.$user->id.'/edit') }}" class="btn btn-primary"
-                                               title="Editar Usuario">
+                                    @if(Auth::user()->can('EditarRol'))
+                                        <td>
+                                            <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-primary"
+                                               title="Editar Rol">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                    </td>
+                                        </td>
                                     @endif
                                     <td>
                                         <button class="btn btn-danger"
-                                                data-action="{{ url('/usuarios/'.$user->id) }}"
-                                                data-name="{{ $user->nombre . " " . $user->apellido . " C.I.: " . $user->cedula  }}"
-                                                data-toggle="modal" data-target="#confirm-delete" title="Eliminar Usuario">
+                                                data-action="{{ url('/roles/'.$role->id) }}"
+                                                data-name="{{ $role->name }}"
+                                                data-toggle="modal" data-target="#confirm-delete"
+                                                title="Eliminar Rol">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
-                                    </td>
+                                    </td>--}}
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="7" class="text-center">
-                                    {{ $users->appends(['buscar'=>$buscar])->links() }}
+                                <td colspan="8" class="text-center">
+                                    {{ $recipes->links() }}
                                 </td>
                             </tr>
                         </table>
@@ -114,7 +90,7 @@
                                 class="btn btn-default"
                                 data-dismiss="modal">Cancelar
                         </button>
-                        @if(Auth::user()->can('EliminarUsuario'))
+                        @if(Auth::user()->can('EliminarRecipe'))
                             <button id="delete-btn"
                                     class="btn btn-danger"
                                     title="Eliminar">Eliminar
