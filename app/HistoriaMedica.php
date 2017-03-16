@@ -18,7 +18,7 @@ class HistoriaMedica extends Model
 
     public function recipe()
     {
-        return $this->belongsTo('App\Recipe');
+        return $this->hasOne('App\Recipe', 'historiamedica_id');
     }
     public function cita()
     {

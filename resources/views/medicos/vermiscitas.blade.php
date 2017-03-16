@@ -42,9 +42,8 @@
                                             @endif
                                             </td>
                                             <td>
-                                                @if(Auth::user()->can('CrearRecipe'))
-                                                    <a href="{{ url('recipes/create') }}"
-                                                       class="btn btn-primary" title="Crear Recipe">
+                                                @if(Auth::user()->can('CrearRecipe') && $cita->historiaMedica && !$cita->historiaMedica->recipe)
+                                                    <a href="{{ url('recipes/create/'.$cita->historiaMedica->id) }}" class="btn btn-info" title="Crear Recipe">
                                                         <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                                                     </a>
                                                     @else

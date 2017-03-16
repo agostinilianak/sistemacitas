@@ -9,7 +9,7 @@ class Recipe extends Model
     protected $table= "recipes";
 
     protected $fillable = [
-        'historiamedica_id', 'status', 'observaciones', 'medicina_id', 'farmaceuta_id',
+        'historiamedica_id', 'status', 'observaciones', 'farmaceuta_id',
     ];
 
     public function medicina()
@@ -18,7 +18,7 @@ class Recipe extends Model
     }
     public function historiaMedica()
     {
-        return $this->hasOne('App\HistoriaMedica');
+        return $this->belongsTo('App\HistoriaMedica', 'historiamedica_id');
     }
     public function farmaceuta()
     {

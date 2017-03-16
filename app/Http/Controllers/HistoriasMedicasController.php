@@ -7,8 +7,10 @@ use App\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SoftDeletes;
-use App\User;
 use App\HistoriaMedica;
+use App\Recipe;
+use App\User;
+
 
 class HistoriasMedicasController extends Controller
 {
@@ -24,16 +26,8 @@ class HistoriasMedicasController extends Controller
 
     public function index($id=null)
     {
-        $hmedicas = null;
-        $buscar = \Request::get('buscar');
-        if($buscar!='')
-            $hmedicas= HistoriaMedica::nombre($buscar)
-                ->apellido($buscar)
-                ->cedula($buscar)
-                ->paginate();
-        else
-            $hmedicas = HistoriaMedica::paginate(10);
-        return view('historiasmedicas.index', ['hmedicas' =>$hmedicas, 'buscar'=>$buscar]);
+        $hmedicas = HistoriaMedica::paginate();
+        return view('historiasmedicas.index', ['hmedicas' =>$hmedicas]);
     }
 
     /**
@@ -112,6 +106,9 @@ class HistoriasMedicasController extends Controller
      */
     public function edit($id)
     {
+        if (!Auth::user()->can('EditarHistoriaMedica'))
+            abort(403, 'Acceso Prohibido');
+
         $hmedica = HistoriaMedica::findOrFail($id);
         return view('historiasmedicas.edit', ['hmedica' => $hmedica]);
     }
@@ -165,8 +162,15 @@ class HistoriasMedicasController extends Controller
         if (!Auth::user()->can('EliminarHistoriaMedica'))
             abort(403, 'Permiso Denegado.');
 
-        HistoriaMedica::destroy($id);
-        return redirect('/historiasmedicas')->with('mensaje', 'Historia Medica eliminada satisfactoriamente');
+        try {
+            \DB::beginTransaction();
+            HistoriaMedica::destroy($id);
+        }catch (\Exception $e) {
+            return redirect('/historiasmedicas')->with('mensaje', 'No se pudo procesar su solicitud');
+        }finally{
+            \DB::commit();
+            return redirect('/historiasmedicas')->with('mensaje', 'Historia Medica eliminada satisfactoriamente');
+        }
     }
     public function verhistoriamedica($id)
     {

@@ -27,37 +27,32 @@
                             </tr>
                             @foreach($recipes as $recipe)
                                 <tr>
-                                    <td>{{ $recipe->historiamedica->cita->paciente->nombre }}</td>
-                                    {{--}}@if(Auth::user()->can('AsignarPermiso'))
+                                    <td>{{ $recipe->historiaMedica->cita->paciente->nombre." ".$recipe->historiaMedica->cita->paciente->apellido }}</td>
+                                    <td>{{ $recipe->historiaMedica->cita->medico->nombre." ".$recipe->historiaMedica->cita->medico->apellido }}</td>
+                                    <td>{{ $recipe->historiaMedica->cita->medico->especialidad->nombre }}</td>
+                                    <td>{{ $recipe->medicina[]->nombre  }}</td>
+                                    {{--@if(Auth::user()->can('EditarRecipe'))--}}
                                         <td>
-                                            <a href="{{ url('roles/'.$role->id.'/permisos') }}" class="btn btn-warning"
-                                               title="Asignar Permisos">
-                                                <i class="fa fa-id-card"></i>
-                                            </a>
-                                        </td>
-                                    @endif
-                                    @if(Auth::user()->can('EditarRol'))
-                                        <td>
-                                            <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-primary"
-                                               title="Editar Rol">
+                                            <a href="{{ url('recipe/'.$recipe->id.'/edit') }}" class="btn btn-primary"
+                                               title="Editar Recipe">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
-                                    @endif
+                                    {{--@endif--}}
                                     <td>
                                         <button class="btn btn-danger"
-                                                data-action="{{ url('/roles/'.$role->id) }}"
-                                                data-name="{{ $role->name }}"
+                                                data-action="{{ url('/recipes/'.$recipe->id) }}"
+                                                data-name="{{ $recipe->if }}"
                                                 data-toggle="modal" data-target="#confirm-delete"
-                                                title="Eliminar Rol">
+                                                title="Eliminar Recipe">
                                             <i class="fa fa-trash fa-1x"></i>
                                         </button>
-                                    </td>--}}
+                                    </td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <td colspan="8" class="text-center">
-                                    {{ $recipes->links() }}
+                                    {{---{{ $recipes->links() }}--}}
                                 </td>
                             </tr>
                         </table>

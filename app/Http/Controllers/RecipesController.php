@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Recipe;
 use App\HistoriaMedica;
 use App\Medicina;
-use App\User;
-use App\Especialidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Recipe;
-use App\Cita;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Validator;
+
 
 
 class RecipesController extends Controller
@@ -19,23 +20,10 @@ class RecipesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        $recipes = null;
-        $buscar = \Request::get('buscar');
-        if($buscar!='')
-            $recipes=Recipe::nombre($buscar)
-                ->apellido($buscar)
-                ->cedula($buscar)
-                ->paginate();
-        else
-            $recipes=Recipe::paginate(10);
-        return view('recipes.index', ['recipes' =>$recipes, 'buscar'=>$buscar]);
+        $recipes=Recipe::paginate(10);
+        return view('recipes.index', ['recipes' =>$recipes]);
     }
 
     /**
@@ -45,20 +33,14 @@ class RecipesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function create($id)
+    public function create($id=null)
     {
         if (!Auth::user()->can('CrearRecipe'))
             abort(403, 'Acceso Prohibido');
 
         $hmedica = HistoriaMedica::findOrFail($id);
-        $cita = Cita::findOrFail($id);
-        $user = $cita->paciente;
-        $medico = $cita->medico;
-        $especialidad = $cita->especialidad;
-        $medicina = Medicina::all();
-        $recipe = Recipe::all();
-        return view('recipes.create', ['hmedica'=>$hmedica, 'medicina'=>$medicina, 'recipe'=>$recipe, 'user'=>$user,
-            'cita'=>$cita, 'especialidad'=>$especialidad, 'medico'=>$medico]);
+        $medicinas = Medicina::all();
+        return view('recipes.create', ['hmedica'=>$hmedica, 'medicinas'=>$medicinas]);
     }
 
     public function store(Request $request)
@@ -66,27 +48,24 @@ class RecipesController extends Controller
         $v=Validator::make($request->all(),[
             'historiamedica_id' => 'required',
             'observaciones' => 'required',
-            'status' => 'required',
         ]);
 
         if ($v->fails()) {
             return redirect()->back()->withErrors($v)->withInput();
         }
-
         try {
             \DB::beginTransaction();
-            $hmedica=HistoriaMedica::findOrFail($id);
+
             $recipe= Recipe::create([
-                'historiamedica_id'=>$hmedica->id,
-                'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
+                'historiamedica_id'=>$request->input('historiamedica_id'),
                 'observaciones'=> $request->input('observaciones'),
+                'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
             ]);
 
-            $recipe->medicina()->sync($request->input('medicina_id'));
-
+            $recipe->medicina()->sync($request->input('medicina'));
         } catch (\Exception $e) {
             \DB::rollback();
-
+            return redirect('/medicos/vermiscitas')->with('mensaje', 'No se pudo procesar su solicitud. Ocurrió un error inesperado');
         } finally {
             \DB::commit();
         }
@@ -118,13 +97,12 @@ class RecipesController extends Controller
      */
     public function edit($id)
     {
-        if (!Auth::user()->can('ModificarRecipe'))
+        if (!Auth::user()->can('EditarRecipe'))
             abort(403, 'Acceso Prohibido');
 
         $medicinas = Medicina::findOrFail($id);
-        $hmedica = HistoriaMedica::findOrFail($id);
         $recipe = Recipe::findOrFail($id);
-        return view('recipes.edit', ['medicinas'=>$medicinas, 'hmedica'=>$hmedica, 'recipe'=>$recipe]);
+        return view('recipes.edit', ['medicinas'=>$medicinas, 'recipe'=>$recipe]);
     }
 
     /**
@@ -137,25 +115,21 @@ class RecipesController extends Controller
     public function update(Request $request, $id)
     {
         $v=Validator::make($request->all(),[
-            'historiamedica_id' => 'required',
             'observaciones' => 'required',
-            'status' => 'required',
         ]);
 
         if ($v->fails()) {
             return redirect()->back()->withErrors($v)->withInput();
         }
-
         try {
             \DB::beginTransaction();
-            $hmedica=HistoriaMedica::findOrFail($id);
-            $recipe= Recipe::create([
-                'historiamedica_id'=>$hmedica->id,
+            $recipe= Recipe::findOrFail($id);
+            $recipe->update([
                 'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
                 'observaciones'=> $request->input('observaciones'),
             ]);
 
-            $recipe->medicina()->sync($request->input('medicina_id'));
+            $recipe->medicina()->sync($request->input('medicina'));
 
         } catch (\Exception $e) {
             \DB::rollback();
@@ -176,8 +150,18 @@ class RecipesController extends Controller
         if (!Auth::user()->can('EliminarRecipe'))
             abort(403, 'Permiso Denegado.');
 
-        User::destroy($id);
-        return redirect('/recipe')->with('mensaje', 'Recipe eliminado satisfactoriamente');
+        try{
+            \DB::beginTransaction();
+            Recipe::destroy($id);
+        }catch (\Exception $e){
+            \DB::rollback();
+            return redirect('/recipe')->with('mensaje', 'No se pudo procesar su solicitud');
+        }finally{
+            \DB::commit();
+            return redirect('/recipe')->with('mensaje', 'Recipe eliminado satisfactoriamente');
+        }
+
+
 
     }
 }

@@ -12,35 +12,38 @@
                             {{ method_field('POST') }}
                             {{ csrf_field() }}
 
-                            <div class="form-group{{ $errors->has('historiamedica_id') ? ' has-error' : '' }}">
-                                <label for="" class="col-md-4 control-label">Paciente</label>
+                            <div class="form-group">
+                                <label for="medico" class="col-md-4 control-label">Medico</label>
                                 <div class="col-md-6">
-                                    <input id="" type="text" class="form-control" name=""
-                                           value="{{ $hmedica->cita->paciente->nombre." ".$hmedica->cita->paciente->apellido." ". $hmedica->cita->paciente->cedula }}"
-                                           autofocus readonly>
-                                    <input type="hidden" id="historiamedica_id" name="historiamedica_id"
-                                           value="{{ $hmedica->id }}">
-                                    @if($errors->has('historiamedica_id'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('historiamedica_id') }}</strong>
-                                        </span>
-                                    @endif
+                                <input type="text" class="form-control" value="{{ $hmedica->cita->medico->nombre. " ".
+                                $hmedica->cita->medico->apellido. " (".$hmedica->cita->medico->especialidad->nombre.")" }}" readonly>
+                                </div>
+                                <input type="hidden" name="historiamedica_id" id="historiamedica_id" value="{{$hmedica->id}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="paciente" class="col-md-4 control-label">Paciente</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" value="{{ $hmedica->cita->paciente->nombre. " ".
+                                    $hmedica->cita->paciente->apellido. " C.I.:".$hmedica->cita->paciente->cedula }}" readonly>
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('medicina_id') ? ' has-error' : '' }}">
-                                <label for="medicina_id" class="col-md-4 control-label">Medicinas</label>
+
+                            <div class="form-group{{ $errors->has('medicina') ? ' has-error' : '' }}">
+                                <label for="medicina" class="col-md-4 control-label">Medicinas</label>
                                 <div class="col-md-6">
-                                    <select name="medicina_id[]" id="medicina_id[]" class="selectpicker" multiple
-                                            data-max-options="3">
+                                    <select name="medicina[]" id="medicina" class="form-control selectpicker" multiple
+                                            data-max-options="5">
                                         <option value="">Seleccione</option>
                                         @foreach($medicinas as $medicina)
-                                            <option value="{{ $medicina->id }}">{{ $medicina->nombre }}</option>
+                                            <option value="{{ $medicina->id }}" @if(old('medicina')==$medicina->id) selected @endif>
+                                                {{ $medicina->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @if($errors->has('medicina_id'))
+                                @if($errors->has('medicina'))
                                     <span class="help-block">
-                                            <strong>{{ $errors->first('medicina_id') }}</strong>
+                                            <strong>{{ $errors->first('medicina') }}</strong>
                                         </span>
                                 @endif
                             </div>
