@@ -22,7 +22,8 @@
                                 <th>Paciente</th>
                                 <th>Medico</th>
                                 <th>Especialidad</th>
-                                <th>Medicinas</th>
+                                <th>Observaciones</th>
+                                <th>Status</th>
                                 <th width="10%" colspan="3">Acciones</th>
                             </tr>
                             @foreach($recipes as $recipe)
@@ -30,19 +31,40 @@
                                     <td>{{ $recipe->historiaMedica->cita->paciente->nombre." ".$recipe->historiaMedica->cita->paciente->apellido }}</td>
                                     <td>{{ $recipe->historiaMedica->cita->medico->nombre." ".$recipe->historiaMedica->cita->medico->apellido }}</td>
                                     <td>{{ $recipe->historiaMedica->cita->medico->especialidad->nombre }}</td>
-                                    <td>{{ $recipe->medicina[]->nombre  }}</td>
+                                    <td>{{ $recipe->observaciones }}</td>
+                                    <td>{{ $recipe->status }}</td>
+                                    <td>
+                                        @if(Auth::user()->can('VerRecipe'))
+                                            <a href="{{ url('recipes/'.$recipe->id.'/verrecipes') }}"
+                                               class="btn btn-primary" title="Ver Recipe">
+                                                <i class="fa fa-search-plus" aria-hidden="true"></i>
+                                            </a>
+                                        @else
+                                            <button class="btn btn-primary" disabled>
+                                                <i class="fa fa-search-plus" aria-hidden="true" title="Ver Recipe"></i>
+                                            </button>
+                                        @endif
+                                    </td>
                                     {{--@if(Auth::user()->can('EditarRecipe'))--}}
                                         <td>
-                                            <a href="{{ url('recipe/'.$recipe->id.'/edit') }}" class="btn btn-primary"
+                                            <a href="{{ url('recipes/'.$recipe->id.'/edit') }}" class="btn btn-primary"
                                                title="Editar Recipe">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     {{--@endif--}}
+                                    @if(Auth::user()->can('CambiarStatusRecipe'))
+                                        <td>
+                                            <a href="{{ url('recipes/'.$recipe->id.'/cambiarstatusrecipe') }}"
+                                               class="btn btn-success" title="Cambia Status Recipe">
+                                                <i class="fa fa-id-card"></i>
+                                            </a>
+                                        </td>
+                                    @endif
                                     <td>
                                         <button class="btn btn-danger"
                                                 data-action="{{ url('/recipes/'.$recipe->id) }}"
-                                                data-name="{{ $recipe->if }}"
+                                                data-name="{{ $recipe->historiaMedica->cita->paciente->nombre." ".$recipe->historiaMedica->cita->paciente->apellido }}"
                                                 data-toggle="modal" data-target="#confirm-delete"
                                                 title="Eliminar Recipe">
                                             <i class="fa fa-trash fa-1x"></i>

@@ -5,10 +5,10 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Editar Recipe</div>
+                    <div class="panel-heading">Cambiar Status Recipe</div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/recipes') }}">
+                        <form class="form-horizontal" role="form" method="post" action="{{ url('/recipes/'.$recipe->id) }}">
                             {{ method_field('PUT') }}
                             {{ csrf_field() }}
 
@@ -16,24 +16,26 @@
                                 <label for="medico" class="col-md-4 control-label">Medico</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" value="{{ $recipe->historiaMedica->cita->medico->nombre. " ".
-                                $recipe->historiaMedica->cita->medico->apellido. " (".$recipe->historiaMedica->cita->medico->especialidad->nombre.")" }}" readonly>
+                                $recipe->historiaMedica->cita->medico->apellido. " (".$recipe->historiaMedica->cita->medico->especialidad->nombre.")" }}"
+                                           readonly>
                                 </div>
-                                <input type="hidden" name="historiamedica_id" id="historiamedica_id" value="{{$recipe->historiaMedica->id}}">
+                                <input type="hidden" name="historiamedica_id" id="historiamedica_id"
+                                       value="{{$recipe->historiaMedica->id}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="paciente" class="col-md-4 control-label">Paciente</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" value="{{ $recipe->historiaMedica->cita->paciente->nombre. " ".
-                                    $recipe->historiaMedica->cita->paciente->apellido. " C.I.:".$recipe->historiaMedica->cita->paciente->cedula }}" readonly>
+                                    $recipe->historiaMedica->cita->paciente->apellido. " C.I.:".$recipe->historiaMedica->cita->paciente->cedula }}"
+                                           readonly>
                                 </div>
                             </div>
-
                             <div class="form-group{{ $errors->has('medicina') ? ' has-error' : '' }}">
                                 <label for="medicina" class="col-md-4 control-label">Medicinas</label>
                                 <div class="col-md-6">
                                     <select name="medicina[]" id="medicina" class="form-control selectpicker" multiple="multiple"
-                                            data-max-options="5">
+                                            data-max-options="5" readonly>
                                         <?php $selected = ""; ?>
                                         @foreach($medicinas as $medicina)
                                             @foreach($recipe->medicina as $med)
@@ -58,13 +60,36 @@
                                 <label for="observaciones" class="col-md-4 control-label">Observaciones</label>
                                 <div class="col-md-6">
                                         <textarea name="observaciones" id="observaciones" cols="50"
-                                                  rows="5">{{ $recipe->observaciones or old('observaciones') }}</textarea>
+                                                  rows="5"
+                                                  readonly>{{ $recipe->observaciones or old('observaciones') }}</textarea>
                                     @if($errors->has('observaciones'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('observaciones') }}</strong>
                                         </span>
                                     @endif
                                 </div>
+                            </div>
+                            <div class="form-group {{$errors->has('status') ? 'has-error' : ''}}">
+                                <label for="status" class="col-md-4 control-label">Status del Recipe</label>
+                                <div class="col-md-6">
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="">Seleccione:</option>
+                                        <option value="activo" @if(old('status')=='activo') selected @endif>
+                                            Activo
+                                        </option>
+                                        <option value="entregado" @if(old('status')=='entregado') selected @endif>
+                                            Entregado
+                                        </option>
+                                        <option value="cancelado" @if(old('status')=='cancelado') selected @endif>
+                                            Cancelado
+                                        </option>
+                                    </select>
+                                </div>
+                                @if($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">

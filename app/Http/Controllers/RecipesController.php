@@ -97,8 +97,8 @@ class RecipesController extends Controller
      */
     public function edit($id)
     {
-        if (!Auth::user()->can('EditarRecipe'))
-            abort(403, 'Acceso Prohibido');
+//        if (!Auth::user()->can('EditarRecipe'))
+  //          abort(403, 'Acceso Prohibido');
 
         $medicinas = Medicina::findOrFail($id);
         $recipe = Recipe::findOrFail($id);
@@ -160,8 +160,21 @@ class RecipesController extends Controller
             \DB::commit();
             return redirect('/recipe')->with('mensaje', 'Recipe eliminado satisfactoriamente');
         }
-
-
-
     }
+    public function verrecipes($id)
+    {
+        $medicinas = Medicina::all();
+        $recipe = Recipe::findOrFail($id);
+        return view('recipes.verrecipes', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
+    }
+    public function cambiarstatusrecipe($id)
+    {
+        if (!Auth::user()->can('CambiarStatusRecipe'))
+            abort(403);
+        $medicinas = Medicina::all();
+        $recipe = Recipe::findOrFail($id);
+        return view('recipes.cambiarstatusrecipe', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
+    }
+
+
 }
