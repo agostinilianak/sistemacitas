@@ -4213,6 +4213,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     .navbar-fixed-bottom .navbar-collapse {
         padding-right: 0;
         padding-left: 0;
+        background-color: #b8ec79;
     }
 }
 .navbar-fixed-top .navbar-collapse,
@@ -4494,7 +4495,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     }
 }
 .navbar-default {
-    background-color: #f8f8f8;
+    background-color: #b8ec79;
     border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {

@@ -187,7 +187,7 @@ class UsersController extends Controller
                 'direccion' => $request->input('direccion'),
                 'email' => $request->input('email'),
                 'role' => $request->input('role'),
-                'especialidad_id' => $request->input('especialidad'),
+                'especialidad_id' => ($request->input('especialidad')!='')?$request->input('especialidad'):NULL,
             ]);
 
             if ($request->input('password')) {
@@ -207,7 +207,7 @@ class UsersController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
-            var_dump($e);
+
         } finally {
             \DB::commit();
         }

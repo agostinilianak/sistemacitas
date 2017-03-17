@@ -65,7 +65,7 @@
             }
         </style>
     </head>
-    <body style="background-color: mediumaquamarine">
+    <body style="background-color: #b8ec79">
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -79,7 +79,7 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md" style="background-color: mediumaquamarine">
+                <div class="title m-b-md" style="background-color: #b8ec79">
                     Sistema Citas Medicas
                 </div>
                 <div class="connect">

@@ -160,9 +160,9 @@ class RecipesController extends Controller
     }
     public function verrecipes($id)
     {
-        $medicinas = Medicina::all();
-        $recipe = Recipe::findOrFail($id);
-        return view('recipes.verrecipes', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
+            $medicinas = Medicina::all();
+            $recipe = Recipe::findOrFail($id);
+            return view('recipes.verrecipes', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
     }
 
     public function cambiarstatusrecipe($id)
