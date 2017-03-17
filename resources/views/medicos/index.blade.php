@@ -58,14 +58,6 @@
                                         <td>{{ $user->telefono }}</td>
                                         <td>{{ $user->celular }}</td>
                                         <td>{{ $user->especialidad->nombre }}</td>
-                                        @if(Auth::user()->can('PermisosUsuario'))
-                                        <td>
-                                            <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                               class="btn btn-warning" title="Asignar Permisos">
-                                                <i class="fa fa-id-card"></i>
-                                            </a>
-                                        </td>
-                                        @endif
                                         @if(Auth::user()->can('EditarUsuario'))
                                             <td>
                                                 <a href="{{ url('usuarios/'.$user->id.'/edit') }}"
@@ -79,14 +71,14 @@
                                                     data-action="{{ url('/usuarios/'.$user->id) }}"
                                                     data-name="{{ $user->nombre . " " . $user->apellido }}"
                                                     data-toggle="modal" data-target="#confirm-delete"
-                                                    title="Editar Medico">
+                                                    title="Eliminar Medico">
                                                 <i class="fa fa-trash fa-1x"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="7" class="text-center">
+                                    <td colspan="8" class="text-center">
                                         {{ $users->appends(['buscar'=>$buscar])->links() }}
                                     </td>
                                 </tr>

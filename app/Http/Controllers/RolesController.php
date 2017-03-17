@@ -159,6 +159,7 @@ class RolesController extends Controller
         return redirect('/roles')->with('mensaje', 'Rol ha sido eliminado con exito');
     }
 
+
     public function permisos($id){
 
         if(!Auth::user()->can('AsignarPermiso'))

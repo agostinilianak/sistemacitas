@@ -54,14 +54,6 @@
                                         <td>{{ $user->nombre }}</td>
                                         <td>{{ $user->apellido }}</td>
                                         <td>{{ $user->cedula }}</td>
-                                        @if(Auth::user()->can('PermisosUsuario'))
-                                            <td>
-                                                <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                                   class="btn btn-warning" title="Asignar Permisos">
-                                                    <i class="fa fa-id-card"></i>
-                                                </a>
-                                            </td>
-                                        @endif
                                         @if(Auth::user()->can('SolicitarCita'))
                                             <td>
                                                 <a href="{{ url('citas/'.$user->id.'/solicitarcita') }}"

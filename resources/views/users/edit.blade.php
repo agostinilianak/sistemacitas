@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
-                                <label for="role" class="col-md-4 control-label">Role</label>
+                                <label for="role" class="col-md-4 control-label">Rol</label>
 
                                 <div class="col-md-6">
                                     <select name="role" id="role" class="form-control">

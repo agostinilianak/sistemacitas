@@ -23,5 +23,14 @@ class UsersHasRolesTableSeeder extends Seeder
             'role_id'=>5,
             'user_id'=>3,
         ]);
+        DB::table('user_has_roles')->insert([
+            'role_id'=>2,
+            'user_id'=>6,
+        ]);
+        DB::table('user_has_roles')->insert([
+            'role_id'=>3,
+            'user_id'=>7,
+        ]);
+
     }
 }

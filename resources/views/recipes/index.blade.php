@@ -6,7 +6,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="alert alert-info alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         <strong>Info:</strong> {{ session('mensaje') }}.
                     </div>
                 </div>
@@ -22,19 +23,17 @@
                                 <th>Paciente</th>
                                 <th>Medico</th>
                                 <th>Especialidad</th>
-                                <th>Observaciones</th>
                                 <th>Status</th>
-                                <th width="10%" colspan="3">Acciones</th>
+                                <th width="10%" colspan="4">Acciones</th>
                             </tr>
                             @foreach($recipes as $recipe)
                                 <tr>
                                     <td>{{ $recipe->historiaMedica->cita->paciente->nombre." ".$recipe->historiaMedica->cita->paciente->apellido }}</td>
                                     <td>{{ $recipe->historiaMedica->cita->medico->nombre." ".$recipe->historiaMedica->cita->medico->apellido }}</td>
                                     <td>{{ $recipe->historiaMedica->cita->medico->especialidad->nombre }}</td>
-                                    <td>{{ $recipe->observaciones }}</td>
                                     <td>{{ ucfirst($recipe->status) }}</td>
+                                    @if(Auth::user()->can('VerRecipe'))
                                     <td>
-                                        @if(Auth::user()->can('VerRecipe'))
                                             <a href="{{ url('recipes/'.$recipe->id.'/verrecipes') }}"
                                                class="btn btn-primary" title="Ver Recipe">
                                                 <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -43,23 +42,23 @@
                                             <button class="btn btn-primary" disabled>
                                                 <i class="fa fa-search-plus" aria-hidden="true" title="Ver Recipe"></i>
                                             </button>
-                                        @endif
                                     </td>
+                                    @endif
                                     @if(Auth::user()->can('EditarRecipe'))
-                                        <td>
+                                    <td>
                                             <a href="{{ url('recipes/'.$recipe->id.'/edit') }}" class="btn btn-primary"
                                                title="Editar Recipe">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                        </td>
+                                    </td>
                                     @endif
                                     @if(Auth::user()->can('CambiarStatusRecipe'))
-                                        <td>
+                                    <td>
                                             <a href="{{ url('recipes/'.$recipe->id.'/cambiarstatusrecipe') }}"
-                                               class="btn btn-success" title="Cambia Status Recipe">
+                                               class="btn btn-success" title="Cambiar Status Recipe">
                                                 <i class="fa fa-id-card"></i>
                                             </a>
-                                        </td>
+                                    </td>
                                     @endif
                                     <td>
                                         <button class="btn btn-danger"
@@ -74,7 +73,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="8" class="text-center">
-                                    {{ $recipes->links() }}
+                                    {{  $recipes->links() }}
                                 </td>
                             </tr>
                         </table>

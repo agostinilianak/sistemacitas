@@ -186,6 +186,7 @@ class UsersController extends Controller
                 'celular' => $request->input('celular'),
                 'direccion' => $request->input('direccion'),
                 'email' => $request->input('email'),
+                'role' => $request->input('role'),
                 'especialidad_id' => $request->input('especialidad'),
             ]);
 
@@ -206,6 +207,7 @@ class UsersController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
+            var_dump($e);
         } finally {
             \DB::commit();
         }

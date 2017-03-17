@@ -33,10 +33,10 @@
                                 <label for="medicina" class="col-md-4 control-label">Medicinas</label>
                                 <div class="col-md-6">
                                     <select name="medicina[]" id="medicina" class="form-control selectpicker" multiple
-                                            data-max-options="5">
+                                            data-max-options="5" autofocus>
                                         <option value="">Seleccione</option>
                                         @foreach($medicinas as $medicina)
-                                            <option value="{{ $medicina->id }}" @if(old('medicina')==$medicina->id) selected @endif>
+                                            <option value="{{ $medicina->id }}">
                                                 {{ $medicina->nombre }}</option>
                                         @endforeach
                                     </select>
@@ -47,6 +47,7 @@
                                         </span>
                                 @endif
                             </div>
+
                             <div class="form-group{{ $errors->has('observaciones') ? ' has-error' : '' }}">
                                 <label for="observaciones" class="col-md-4 control-label">Observaciones</label>
                                 <div class="col-md-6">

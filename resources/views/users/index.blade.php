@@ -53,14 +53,6 @@
                                     <td>{{ $user->apellido }}</td>
                                     <td>{{ $user->telefono }}</td>
                                     <td>{{ $user->celular }}</td>
-                                    @if(Auth::user()->can('PermisosUsuario'))
-                                    <td>
-                                            <a href="{{ url('usuarios/'.$user->id.'/permisos') }}"
-                                               class="btn btn-warning" title="Asignar Permisos">
-                                                <i class="fa fa-id-card"></i>
-                                            </a>
-                                    </td>
-                                    @endif
                                     @if(Auth::user()->can('EditarUsuario'))
                                     <td>
                                             <a href="{{ url('usuarios/'.$user->id.'/edit') }}" class="btn btn-primary"

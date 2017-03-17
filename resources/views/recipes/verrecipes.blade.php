@@ -37,26 +37,18 @@
                                 <div class="col-md-6">
                                     <select name="medicina[]" id="medicina" class="form-control selectpicker" multiple="multiple"
                                             data-max-options="5" readonly>
-                                        <?php $selected = ""; ?>
                                         @foreach($medicinas as $medicina)
-                                            @foreach($recipe->medicina as $med)
-                                                @if($med->id == $medicina->id)
-                                                    <?php $selected = "selected"; ?>
-                                                    @break
-                                                @else
-                                                    <?php $selected = ""; ?>
-                                                @endif
-                                            @endforeach
-                                            <option value="{{ $medicina->id }}" {{ $selected }}>{{ $medicina->nombre }}</option>
+                                            <option value="{{ $medicina->id }}" @if(in_array($medicina->id, $recipe->medicina()->pluck('id')->toArray())) selected @endif>{{ $medicina->nombre }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                @if($errors->has('medicina'))
-                                    <span class="help-block">
+                                    @if($errors->has('medicina'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('medicina') }}</strong>
                                         </span>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
+
                             <div class="form-group{{ $errors->has('observaciones') ? ' has-error' : '' }}">
                                 <label for="observaciones" class="col-md-4 control-label">Observaciones</label>
                                 <div class="col-md-6">

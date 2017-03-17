@@ -43,7 +43,6 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Recipe');
     }
-
     public function scopeNombre($query, $nombre)
     {
         return $query->where('nombre', 'like', '%'.$nombre.'%');

@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Recipe;
 use App\HistoriaMedica;
 use App\Medicina;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Validator;
-
-
 
 class RecipesController extends Controller
 {
@@ -22,7 +21,7 @@ class RecipesController extends Controller
      */
     public function index()
     {
-        $recipes=Recipe::paginate(10);
+        $recipes=Recipe::orderBy('status')->paginate();
         return view('recipes.index', ['recipes' =>$recipes]);
     }
 
@@ -100,7 +99,7 @@ class RecipesController extends Controller
         if (!Auth::user()->can('EditarRecipe'))
           abort(403, 'Acceso Prohibido');
 
-        $medicinas = Medicina::findOrFail($id);
+        $medicinas = Medicina::all();
         $recipe = Recipe::findOrFail($id);
         return view('recipes.edit', ['medicinas'=>$medicinas, 'recipe'=>$recipe]);
     }
@@ -125,12 +124,10 @@ class RecipesController extends Controller
             \DB::beginTransaction();
             $recipe= Recipe::findOrFail($id);
             $recipe->update([
-                'status'=> ($request->input('status') != '') ? $request->input('status') : 'activo',
                 'observaciones'=> $request->input('observaciones'),
+                'status' => ($request->input('status') != '') ? $request->input('status') : 'activo',
             ]);
-
-            $recipe->medicina()->sync($request->input('medicina'));
-
+                $recipe->medicina()->sync($request->input('medicina'));
         } catch (\Exception $e) {
             \DB::rollback();
             return redirect('/recipes')->with('mensaje', 'No se pudo procesar su solicitud.');
@@ -153,13 +150,13 @@ class RecipesController extends Controller
         try{
             \DB::beginTransaction();
             Recipe::destroy($id);
-        }catch (\Exception $e){
+        }catch(\Exception $e){
             \DB::rollback();
-            return redirect('/recipe')->with('mensaje', 'No se pudo procesar su solicitud');
+            return redirect('/recipes')->with('mensaje', 'No se pudo procesar su solicitud.');
         }finally{
             \DB::commit();
-            return redirect('/recipe')->with('mensaje', 'Recipe eliminado satisfactoriamente');
         }
+        return redirect('/recipes')->with('mensaje', 'Recipe eliminado satisfactoriamente');
     }
     public function verrecipes($id)
     {
@@ -167,6 +164,7 @@ class RecipesController extends Controller
         $recipe = Recipe::findOrFail($id);
         return view('recipes.verrecipes', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
     }
+
     public function cambiarstatusrecipe($id)
     {
         if (!Auth::user()->can('CambiarStatusRecipe'))
@@ -174,8 +172,35 @@ class RecipesController extends Controller
 
         $medicinas = Medicina::all();
         $recipe = Recipe::findOrFail($id);
-        return view('recipes.cambiarstatusrecipe', ['recipe' => $recipe, 'medicinas'=>$medicinas]);
+        $farmaceuta_id = Auth::user()->id;
+        return view('recipes.cambiarstatusrecipe', ['recipe' => $recipe, 'farmaceuta_id' => $farmaceuta_id, 'medicinas'=>$medicinas]);
     }
 
+   public function statusrecipe(Request $request, $id)
+    {
+        $v=Validator::make($request->all(),[
+            'observaciones' => 'required',
+        ]);
 
+        if ($v->fails()) {
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+        try {
+            \DB::beginTransaction();
+            $recipe= Recipe::findOrFail($id);
+            $recipe->update([
+                'observaciones'=> $request->input('observaciones'),
+                'farmaceuta_id' => Auth::user()->id,
+                'status' => ($request->input('status') != '') ? $request->input('status') : 'activo',
+            ]);
+            $recipe->medicina()->sync($request->input('medicina'));
+        } catch (\Exception $e) {
+            \DB::rollback();
+            var_dump($e);
+            return redirect('/recipes')->with('mensaje', 'No se pudo procesar su solicitud.');
+        } finally {
+            \DB::commit();
+        }
+        return redirect('/recipes')->with('mensaje', 'Cambio de Status exitoso');
+    }
 }

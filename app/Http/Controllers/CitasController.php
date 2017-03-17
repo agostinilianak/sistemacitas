@@ -187,9 +187,19 @@ class CitasController extends Controller
         if(!Auth::user()->can('VerMisCitas'))
             abort(403);
 
-        $citas=Cita::orderBy('status')->get();
+        $citas=Cita::where('status','=','solicitada')->get();
         return view('pacientes.vermiscitas', ['citas'=>$citas]);
     }
+
+    public function vermiscitasconcluidas()
+    {
+        if(!Auth::user()->can('VerMisCitas'))
+            abort(403);
+
+        $citas=Cita::where('status','=','concluida')->get();
+        return view('pacientes.vermiscitasconcluidas', ['citas'=>$citas]);
+    }
+
 
     public function vermiscitasmedico()
     {
